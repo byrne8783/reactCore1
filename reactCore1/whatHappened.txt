@@ -1,0 +1,45 @@
+
+
+-------------------------------------------------------------------------------------------------------------------
+Basically I tried the 'ES6 (ES2015)' stage of 'a-basic-react-template-sample-25a3681a5fc2'.  Unfortunately this bit has destroyed the APP - nothing now works in any browser
+So, I backed-out the Babel loader.  In the endof the day I wanna go for Typescript anyway!
+FROM webpack.config.js : 
+    ,
+    module: {
+        rules: [{
+            test: /\.js?$/,
+            use: {
+                loader: 'babel-loader', options: {
+                    presets:
+                        ['@babel/preset-env']
+                }
+            }
+        }
+
+        ]
+    }
+AND
+    ,
+    module: {
+        rules: [{
+            test: /\.js?$/,
+            use: {
+                loader: 'babel-loader', options: {
+                    presets:
+                        [["@babel/preset-env", {
+                            "targets": {
+                                "esmodules": true
+                            }
+                        }]]
+                }
+            }
+        }
+
+        ]
+    }
+
+FROM package.json
+    "babel-preset-env": "^1.7.0",
+---------------------------------------------------------------------I'm back with Babel hanging around but doing nothing. 
+
+
