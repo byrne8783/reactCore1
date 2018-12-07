@@ -8,6 +8,11 @@ want to get Bootstrap/jquery/its two siblings/popper.js/toottip.js integrated in
 I have jQuery integrated with a manual build ('npm run wbp') and have a plugin to automatically load jQuery into the js bundle, 
 I have Bootstrap installed and loading as a module, and its styling the nav bar and menu! I had to update this stuff for BootStrap 4 
 I have site.css loading as a module, however I do not have it doing an automatic build based on the source file save
+I ignored problems getting the 'babel-loader' to transpile ES6 code since I want to go for Typescript 3.0 anyway
+
+So, trying to get my CSS out of inline styles and into a file it transpires "extract-text-webpack-plugin" is obsolete on WebPack 4 and instead 
+I need to use "mini-css-extract-plugin".  so, on with Onward and upward.
+
 
 ****not sure if I'm loading popper.js and tooltip.js - better go over that and make sure
 
@@ -15,21 +20,29 @@ I have site.css loading as a module, however I do not have it doing an automatic
 ****Then I want to get changes to source stuff to do an automatic build - specifically site.css, the js source.
 
 Onward and Upward
-get your head around this webpack production/development bundle thingy
+get your head around this webpack production/development bundle thingy and get it implemented
 
-get your head around the 'extract text' and 'uglify' thingys in sample-25a3681a5fc2 .  The former particularly will get the CSS unto a separate file rather than inline
+get your head around the 'extract text' and 'uglify' thingys in sample-25a3681a5fc2 but you have to use anything other than "extract-text-webpack-plugin".  
+The former particularly will get the CSS unto a separate file rather than inline
+
 
 do the funky hot module replacement, also in sample-25a3681a5fc2, which will get you into Core WebpackDevMiddleware
 
+
 switch to typescript 3.0 as your language of choice.  That means you have to integrate transpilation into js and also HMR of the js to the browser
+
 
 Add React to your projects-a-basic-react-template-sample-25a3681a5fc2
 
+
 Do the whole thing again, based on Core 2.1, with guidance from https://blogs.taiga.nl/martijn/2018/06/14/lean-asp-net-core-2-1-manually-setup-a-razor-pages-project-with-bootstrap-npm-and-webpack/ 
+
 
 Figure out the various ways ( if any! ) React plays with Razor and optimise the HTML accordingly
 
+
 Then have a look at the overall project component structure - after all thats where you want to get to
+
 
 Write a React component, such as a 'tag helper' , maybe even a calendar component.  
 Here's a primer https://blog.flowandform.agency/create-a-custom-calendar-in-react-3df1bfd0b728

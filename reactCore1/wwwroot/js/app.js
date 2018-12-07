@@ -1,4 +1,4 @@
-﻿//$ = require('jquery');
+﻿//$ = require('jquery');  don't need to require it as it is included by the plugin
 
 require('./lib');
 
