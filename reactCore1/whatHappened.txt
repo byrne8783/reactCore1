@@ -1,4 +1,6 @@
-
+-------------------------------------------------------------------------------------------------------------------
+So, trying to get my CSS out of inline styles and into a file it transpires "extract-text-webpack-plugin" is obsolete on WebPack 4 and instead 
+I need to use "mini-css-extract-plugin".  
 
 -------------------------------------------------------------------------------------------------------------------
 Basically I tried the 'ES6 (ES2015)' stage of 'a-basic-react-template-sample-25a3681a5fc2'.  Unfortunately this bit has destroyed the APP - nothing now works in any browser

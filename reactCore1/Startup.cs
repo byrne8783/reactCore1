@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
@@ -23,6 +24,11 @@ namespace ReactCore1
         {
             if (env.IsDevelopment())
             {
+                app.UseWebpackDevMiddleware(new Microsoft.AspNetCore.SpaServices.Webpack.WebpackDevMiddlewareOptions
+                {
+                    //ProjectPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot"),
+                    HotModuleReplacement = true
+                });
                 app.UseDeveloperExceptionPage();
             }
 

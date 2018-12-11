@@ -1,6 +1,7 @@
 Meanwhile :
 https://blogs.taiga.nl/martijn/2017/11/24/building-and-asp-net-core-mvc-app-with-npm-and-webpack-asp-net-core-2-0-edition/      the basis
 https://codeburst.io/how-to-use-webpack-in-asp-net-core-projects-a-basic-react-template-sample-25a3681a5fc2
+https://github.com/natemcmaster/aspnetcore-webpack-hmr-demo
 provide guidance
 
 Right now :
@@ -9,9 +10,10 @@ I have jQuery integrated with a manual build ('npm run wbp') and have a plugin t
 I have Bootstrap installed and loading as a module, and its styling the nav bar and menu! I had to update this stuff for BootStrap 4 
 I have site.css loading as a module, however I do not have it doing an automatic build based on the source file save
 I ignored problems getting the 'babel-loader' to transpile ES6 code since I want to go for Typescript 3.0 anyway
-
-So, trying to get my CSS out of inline styles and into a file it transpires "extract-text-webpack-plugin" is obsolete on WebPack 4 and instead 
-I need to use "mini-css-extract-plugin".  so, on with Onward and upward.
+I have my css ( practically site.css and bootstrap ) being bundled into a file called AllStyles.css by using "mini-css-extract-plugin" on the styles loades with css-loader.
+	I won't get HMR on style changes - to do that I would have to use an ( advanced? ) config, and I'm not ready for that.
+I have my webpack config set up to permit definition of a 'production' build.  I don't have one yet, but I don't need it at the moment
+I have funky HMR going - at least for javascript.  Use 'dotnet watch run' CLI command to have it in action
 
 
 ****not sure if I'm loading popper.js and tooltip.js - better go over that and make sure
@@ -20,23 +22,18 @@ I need to use "mini-css-extract-plugin".  so, on with Onward and upward.
 ****Then I want to get changes to source stuff to do an automatic build - specifically site.css, the js source.
 
 Onward and Upward
-get your head around this webpack production/development bundle thingy and get it implemented
 
-get your head around the 'extract text' and 'uglify' thingys in sample-25a3681a5fc2 but you have to use anything other than "extract-text-webpack-plugin".  
-The former particularly will get the CSS unto a separate file rather than inline
+switch to typescript 3.0 as your language of choice.  That means you have to integrate transpilation into js and also integrate transpilation into HMR of the js to the browser
 
+it would be nice to have that 'dotnet watch run' thingy automated with a launchSettings.json.  But maybe thats VScore rather than VS2017
 
-do the funky hot module replacement, also in sample-25a3681a5fc2, which will get you into Core WebpackDevMiddleware
-
-
-switch to typescript 3.0 as your language of choice.  That means you have to integrate transpilation into js and also HMR of the js to the browser
-
+meanwhile what is 'dotnet dev-certs' 
 
 Add React to your projects-a-basic-react-template-sample-25a3681a5fc2
 
+get your head around the 'uglify' thingys in sample-25a3681a5fc2 and get a webpack production build implemented with minification and uglification
 
-Do the whole thing again, based on Core 2.1, with guidance from https://blogs.taiga.nl/martijn/2018/06/14/lean-asp-net-core-2-1-manually-setup-a-razor-pages-project-with-bootstrap-npm-and-webpack/ 
-
+Do the whole thing again, just to be able to understand it, with guidance from https://blogs.taiga.nl/martijn/2018/06/14/lean-asp-net-core-2-1-manually-setup-a-razor-pages-project-with-bootstrap-npm-and-webpack/ 
 
 Figure out the various ways ( if any! ) React plays with Razor and optimise the HTML accordingly
 
