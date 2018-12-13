@@ -14,6 +14,9 @@ I have my css ( practically site.css and bootstrap ) being bundled into a file c
 	I won't get HMR on style changes - to do that I would have to use an ( advanced? ) config, and I'm not ready for that.
 I have my webpack config set up to permit definition of a 'production' build.  I don't have one yet, but I don't need it at the moment
 I have funky HMR going - at least for javascript.  Use 'dotnet watch run' CLI command to have it in action
+I also have regular ( WebPackDevMiddleware based) funky HMR going, I.E. without 'dotnet watch run'
+
+OK.  I've decided to separate out my 'source' from what is shipped to the browser.  So 'client/' needs to be used to contain css,ts,js
 
 
 ****not sure if I'm loading popper.js and tooltip.js - better go over that and make sure

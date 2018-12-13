@@ -1,0 +1,28 @@
+{
+  "compileOnSave": true,
+  "buildOnSave": false,
+  "compilerOptions": {
+    "module": "es6",
+    "newLine": "crlf",
+    "noImplicitAny": false,
+    "noEmitOnError": true,
+    "outDir": "./wwwroot/js",
+    "removeComments": false,
+    "sourceMap": true,
+    "target": "es5",
+    "lib": [
+      "es2016",
+      "dom",
+      "es5"
+    ]
+
+  },
+  "exclude": [
+    "node_modules",
+    "bin",
+    "wwwroot",
+    "outDir",
+    "./wwwroot/js/"
+  ],
+
+}

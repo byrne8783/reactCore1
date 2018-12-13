@@ -2,9 +2,18 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TypeScriptToolsVersion>3.1</TypeScriptToolsVersion>
+	<TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
   </PropertyGroup>
 
   <ItemGroup>
+
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="client\css\" />
+    <Folder Include="client\js\" />
+    <Folder Include="client\ts\" />
     <Folder Include="Views\Shared\" />
     <Folder Include="wwwroot\dist\lib\" />
   </ItemGroup>

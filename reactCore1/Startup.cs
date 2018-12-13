@@ -27,6 +27,10 @@ namespace ReactCore1
                 app.UseWebpackDevMiddleware(new Microsoft.AspNetCore.SpaServices.Webpack.WebpackDevMiddlewareOptions
                 {
                     //ProjectPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot"),
+                    HotModuleReplacementClientOptions = new Dictionary<string, string>()
+                    {
+                        { "reload", "true" }
+                    },
                     HotModuleReplacement = true
                 });
                 app.UseDeveloperExceptionPage();
