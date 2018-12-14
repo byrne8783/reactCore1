@@ -15,34 +15,26 @@ I have my css ( practically site.css and bootstrap ) being bundled into a file c
 I have my webpack config set up to permit definition of a 'production' build.  I don't have one yet, but I don't need it at the moment
 I have funky HMR going - at least for javascript.  Use 'dotnet watch run' CLI command to have it in action
 I also have regular ( WebPackDevMiddleware based) funky HMR going, I.E. without 'dotnet watch run'
-
-OK.  I've decided to separate out my 'source' from what is shipped to the browser.  So 'client/' needs to be used to contain css,ts,js
+I have Typescript 3.1 running and functioning in the HMR
+I've decided to separate out my 'source' from what is shipped to the browser.  So 'client/' is the thingy I edit
 
 
 ****not sure if I'm loading popper.js and tooltip.js - better go over that and make sure
 
 
-****Then I want to get changes to source stuff to do an automatic build - specifically site.css, the js source.
-
 Onward and Upward
-
-switch to typescript 3.0 as your language of choice.  That means you have to integrate transpilation into js and also integrate transpilation into HMR of the js to the browser
-
-it would be nice to have that 'dotnet watch run' thingy automated with a launchSettings.json.  But maybe thats VScore rather than VS2017
+get HMR of own styles; which means using style-loader instead of MiniCssExtractFuile in development
+get your head around the 'uglify' thingys in sample-25a3681a5fc2 and get a webpack production build implemented with minification and uglification
 
 meanwhile what is 'dotnet dev-certs' 
 
 Add React to your projects-a-basic-react-template-sample-25a3681a5fc2
 
-get your head around the 'uglify' thingys in sample-25a3681a5fc2 and get a webpack production build implemented with minification and uglification
-
 Do the whole thing again, just to be able to understand it, with guidance from https://blogs.taiga.nl/martijn/2018/06/14/lean-asp-net-core-2-1-manually-setup-a-razor-pages-project-with-bootstrap-npm-and-webpack/ 
 
 Figure out the various ways ( if any! ) React plays with Razor and optimise the HTML accordingly
 
-
 Then have a look at the overall project component structure - after all thats where you want to get to
-
 
 Write a React component, such as a 'tag helper' , maybe even a calendar component.  
 Here's a primer https://blog.flowandform.agency/create-a-custom-calendar-in-react-3df1bfd0b728

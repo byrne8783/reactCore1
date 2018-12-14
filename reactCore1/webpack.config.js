@@ -8,7 +8,7 @@ module.exports = (env = {}, argv = {}) => {
         mode: argv.mode || 'development',               // "production" | "development" | "whatever"
         resolve: { extensions: ['*', '.ts','.js']},     // supposed to mean 'look in .js and .ts for modules specified without and extension;  but a bit hairy!
         entry: {
-            main: './wwwroot/js/app.js'                // Here is where the application starts executing and webpack starts bundling
+            main: './client/js/app.js'                // Here is where the application starts executing and webpack starts bundling  ./wwwroot/js/app.js
         },
         output: {
             path: path.resolve(__dirname, 'wwwroot/dist'),// the target directory for all output files. Must be an absoute (and not relative) path

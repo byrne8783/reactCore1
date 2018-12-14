@@ -1,0 +1,92 @@
+.xprog
+___________________________
+PropertyGroup block:
+
+    <PropertyGroup>
+         <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Content Include="**\*.ts" Exclude="$(GlobalExclude)" />
+    </ItemGroup>
+`tsconfig.json` file to your project root and make sure the following setting is set:
+
+    "compileOnSave": false,	
+	
+other stuff  to do with Microsoft.TypeScript.targets:
+    <!-- Makes the TypeScript compilation task a no-op -->
+    <TypeScriptCompileBlocked Condition="'$(TypeScriptCompileBlocked)' == ''">false</TypeScriptCompileBlocked>	
+	
+There should be a TypeScript Buils tab in my project properties, which when I set the bits might give me in my project file:
+<TypeScriptTarget>ES5</TypeScriptTarget>
+<TypeScriptJSXEmit>None</TypeScriptJSXEmit>
+<TypeScriptModuleKind>ES6</TypeScriptModuleKind>
+<TypeScriptCompileOnSaveEnabled>False</TypeScriptCompileOnSaveEnabled>
+<TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
+<TypeScriptRemoveComments>False</TypeScriptRemoveComments>
+<TypeScriptOutFile />
+<TypeScriptOutDir />
+<TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
+<TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
+<TypeScriptSourceMap>True</TypeScriptSourceMap>
+<TypeScriptMapRoot />
+<TypeScriptSourceRoot />	
+
+startup.cs
+_____________________
+if (env.IsDevelopment())
+{
+    app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions {
+        HotModuleReplacement = true,
+        HotModuleReplacementClientOptions = new Dictionary<string, string> { 
+            { "reload", "true" }, 
+        },
+        ConfigFile = "node_modules/@vue/cli-service/webpack.config.js",
+    });
+}
+
+tsconfig.json`
+_____________________
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "module": "es2015",
+    "moduleResolution": "node",
+    "target": "es5",
+    "sourceMap": true,
+    "strict": true
+  "lib": [
+    "es6",
+    "dom",
+    "es5"
+  ]	,
+    "outDir": "./Scripts/out/",   // redirects output structure to this folder
+    "rootDir": "./Scripts/src"  
+  }
+}
+
+webpack.config.js
+___________________________
+{
+
+    target: 'node',
+    devtool: 'inline-source-map'
+    module: {
+        loaders: [
+            { test: /\.ts$/, loader: 'ts-loader' }
+        ]
+    }
+
+}
+
+resources
+________________________________
+Interesting         https://docs.microsoft.com/en-us/aspnet/core/tutorials/signalr-typescript-webpack?view=aspnetcore-2.2&tabs=visual-studio
+					https://dzone.com/articles/the-aspnet-core-react-project
+					
+Bits of client-side stuff
+					https://docs.microsoft.com/en-us/aspnet/core/tutorials/signalr-typescript-webpack?view=aspnetcore-2.2&tabs=visual-studio
+					
+					https://github.com/aspnet/JavaScriptServices/tree/master/src/Microsoft.AspNetCore.SpaServices
+					
+					

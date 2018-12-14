@@ -2,11 +2,11 @@
 
 //require('./lib');  don't need to require it as it is imported???????
 
-import ES5Lib from './lib';
+import ES5Lib from './es5Codelib';
 import ES6Lib from './es6CodeLib';
-//import 'bootstrap/dist/css/bootstrap.min.css';  don't need these as I'm not doing inline css anymore.  This was needed by style-loader
-//import '../css/site.css';
-import TSLib from '../../client/ts/tsCodeLib';
+import 'bootstrap/dist/css/bootstrap.min.css';  //not altogether clear to me how this finds bootstrap
+import '../css/site.css';
+import TSLib from '../ts/tsCodeLib';
 
 let myES5Object = new ES5Lib();
 document.getElementById("fillthis").innerHTML = myES5Object.getData();
