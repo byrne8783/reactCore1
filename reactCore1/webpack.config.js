@@ -35,7 +35,14 @@ module.exports = (env = {}, argv = {}) => {
                 // use the two loaders stated for the css files matching the Regex specified to 'test'
                 // the loaders are applied right-to-left
                 //{ test: /\.css$/, use: [{ loader: "style-loader" }, { loader: "css-loader" }] }
-                { test: /\.css$/, use: [{ loader: MiniCssExtractPlugin.loader }, { loader: 'css-loader' }] },
+                // { loader: 'postcss-loader' },
+                {
+                    test: /\.css$/, use: [{ loader: MiniCssExtractPlugin.loader }, { loader: 'css-loader' }]
+                },
+                {
+                    test: /\.scss$/, use: [{ loader: MiniCssExtractPlugin.loader }
+                        , { loader: 'css-loader' },  { loader: 'sass-loader' }]
+                },
                 {
                     test: /\.ts$/, use: [{ loader: 'ts-loader' }]}
             ]

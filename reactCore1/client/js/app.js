@@ -5,7 +5,7 @@
 import ES5Lib from './es5Codelib';
 import ES6Lib from './es6CodeLib';
 import 'bootstrap/dist/css/bootstrap.min.css';  //not altogether clear to me how this finds bootstrap
-import '../css/site.css';
+import * as styles from '../css/site.scss';
 import TSLib from '../ts/tsCodeLib';
 
 let myES5Object = new ES5Lib();

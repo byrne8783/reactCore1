@@ -64,7 +64,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "220f4aa24d5b1bcca64d";
+/******/ 	var hotCurrentHash = "45b619dd5822416f6054";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -794,14 +794,14 @@
 /************************************************************************/
 /******/ ({
 
-/***/ "./client/css/site.css":
-/*!*****************************!*\
-  !*** ./client/css/site.css ***!
-  \*****************************/
+/***/ "./client/css/site.scss":
+/*!******************************!*\
+  !*** ./client/css/site.scss ***!
+  \******************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("// extracted by mini-css-extract-plugin\n\n//# sourceURL=webpack:///./client/css/site.css?");
+eval("// extracted by mini-css-extract-plugin\n\n//# sourceURL=webpack:///./client/css/site.scss?");
 
 /***/ }),
 
@@ -813,7 +813,7 @@ eval("// extracted by mini-css-extract-plugin\n\n//# sourceURL=webpack:///./clie
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var _es5Codelib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./es5Codelib */ \"./client/js/es5Codelib.js\");\n/* harmony import */ var _es6CodeLib__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./es6CodeLib */ \"./client/js/es6CodeLib.js\");\n/* harmony import */ var bootstrap_dist_css_bootstrap_min_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! bootstrap/dist/css/bootstrap.min.css */ \"./node_modules/bootstrap/dist/css/bootstrap.min.css\");\n/* harmony import */ var bootstrap_dist_css_bootstrap_min_css__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(bootstrap_dist_css_bootstrap_min_css__WEBPACK_IMPORTED_MODULE_2__);\n/* harmony import */ var _css_site_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../css/site.css */ \"./client/css/site.css\");\n/* harmony import */ var _css_site_css__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_css_site_css__WEBPACK_IMPORTED_MODULE_3__);\n/* harmony import */ var _ts_tsCodeLib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../ts/tsCodeLib */ \"./client/ts/tsCodeLib.ts\");\n﻿//$ = require('jquery');  don't need to require it as it is included by the plugin\r\n\r\n//require('./lib');  don't need to require it as it is imported???????\r\n\r\n\r\n\r\n  //not altogether clear to me how this finds bootstrap\r\n\r\n\r\n\r\nlet myES5Object = new _es5Codelib__WEBPACK_IMPORTED_MODULE_0__[\"default\"]();\r\ndocument.getElementById(\"fillthis\").innerHTML = myES5Object.getData();\r\n//document.getElementById(\"fillthis\").innerHTML = getText();\r\n$('#fillthiswithjquery').html('Filled by Jquery!');\r\nlet myES6Object = new _es6CodeLib__WEBPACK_IMPORTED_MODULE_1__[\"default\"]();\r\n$('#fillthiswithes6lib').html(myES6Object.getData());\r\nlet myTSObject = new _ts_tsCodeLib__WEBPACK_IMPORTED_MODULE_4__[\"default\"]();\r\n$('#fillThisWithTSlib').html(myTSObject.getData());\r\n\n/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery */ \"./node_modules/jquery/dist/jquery.js\")))\n\n//# sourceURL=webpack:///./client/js/app.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var _es5Codelib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./es5Codelib */ \"./client/js/es5Codelib.js\");\n/* harmony import */ var _es6CodeLib__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./es6CodeLib */ \"./client/js/es6CodeLib.js\");\n/* harmony import */ var bootstrap_dist_css_bootstrap_min_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! bootstrap/dist/css/bootstrap.min.css */ \"./node_modules/bootstrap/dist/css/bootstrap.min.css\");\n/* harmony import */ var bootstrap_dist_css_bootstrap_min_css__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(bootstrap_dist_css_bootstrap_min_css__WEBPACK_IMPORTED_MODULE_2__);\n/* harmony import */ var _css_site_scss__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../css/site.scss */ \"./client/css/site.scss\");\n/* harmony import */ var _css_site_scss__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_css_site_scss__WEBPACK_IMPORTED_MODULE_3__);\n/* harmony import */ var _ts_tsCodeLib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../ts/tsCodeLib */ \"./client/ts/tsCodeLib.ts\");\n﻿//$ = require('jquery');  don't need to require it as it is included by the plugin\r\n\r\n//require('./lib');  don't need to require it as it is imported???????\r\n\r\n\r\n\r\n  //not altogether clear to me how this finds bootstrap\r\n\r\n\r\n\r\nlet myES5Object = new _es5Codelib__WEBPACK_IMPORTED_MODULE_0__[\"default\"]();\r\ndocument.getElementById(\"fillthis\").innerHTML = myES5Object.getData();\r\n//document.getElementById(\"fillthis\").innerHTML = getText();\r\n$('#fillthiswithjquery').html('Filled by Jquery!');\r\nlet myES6Object = new _es6CodeLib__WEBPACK_IMPORTED_MODULE_1__[\"default\"]();\r\n$('#fillthiswithes6lib').html(myES6Object.getData());\r\nlet myTSObject = new _ts_tsCodeLib__WEBPACK_IMPORTED_MODULE_4__[\"default\"]();\r\n$('#fillThisWithTSlib').html(myTSObject.getData());\r\n\n/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery */ \"./node_modules/jquery/dist/jquery.js\")))\n\n//# sourceURL=webpack:///./client/js/app.js?");
 
 /***/ }),
 

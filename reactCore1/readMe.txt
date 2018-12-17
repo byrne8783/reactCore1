@@ -17,13 +17,12 @@ I have funky HMR going - at least for javascript.  Use 'dotnet watch run' CLI co
 I also have regular ( WebPackDevMiddleware based) funky HMR going, I.E. without 'dotnet watch run'
 I have Typescript 3.1 running and functioning in the HMR
 I've decided to separate out my 'source' from what is shipped to the browser.  So 'client/' is the thingy I edit
-
+I've transferred my style definitions to sass and I got the junky HMR for style changes.  We're sucking diesel. 
 
 ****not sure if I'm loading popper.js and tooltip.js - better go over that and make sure
 
 
 Onward and Upward
-get HMR of own styles; which means using style-loader instead of MiniCssExtractFuile in development
 get your head around the 'uglify' thingys in sample-25a3681a5fc2 and get a webpack production build implemented with minification and uglification
 
 meanwhile what is 'dotnet dev-certs' 

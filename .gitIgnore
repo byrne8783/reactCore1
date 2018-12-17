@@ -8,8 +8,11 @@
 /node_modules
 
 #webpack build stuff
+## also js is just generated in here;  so its not source
 */wwwroot/dist/*.css
 */wwwroot/dist/*.js
+*/wwwroot/*.js
+*/wwwroot/*.js.map
 
 # testing
 /coverage

@@ -18,9 +18,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="client\ts\global.d.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="client\css\" />
     <Folder Include="client\js\" />
-    <Folder Include="client\ts\" />
     <Folder Include="Views\Shared\" />
     <Folder Include="wwwroot\dist\lib\" />
   </ItemGroup>
@@ -28,6 +31,10 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="client\ts\global.d.ts" />
   </ItemGroup>
 
 </Project>
