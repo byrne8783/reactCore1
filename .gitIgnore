@@ -13,6 +13,7 @@
 */wwwroot/dist/*.js
 */wwwroot/*.js
 */wwwroot/*.js.map
+*/wwwroot/js/*.js
 
 # testing
 /coverage

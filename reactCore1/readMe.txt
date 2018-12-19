@@ -19,13 +19,9 @@ I have Typescript 3.1 running and functioning in the HMR
 I've decided to separate out my 'source' from what is shipped to the browser.  So 'client/' is the thingy I edit
 I've transferred my style definitions to sass and I got the junky HMR for style changes.  We're sucking diesel. 
 
-****not sure if I'm loading popper.js and tooltip.js - better go over that and make sure
-
 
 Onward and Upward
 get your head around the 'uglify' thingys in sample-25a3681a5fc2 and get a webpack production build implemented with minification and uglification
-
-meanwhile what is 'dotnet dev-certs' 
 
 Add React to your projects-a-basic-react-template-sample-25a3681a5fc2
 
