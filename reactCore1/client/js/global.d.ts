@@ -3,3 +3,7 @@
     export = content;
 }
 
+interface JQuery {
+    tooltip(options?: any): any;
+}
+

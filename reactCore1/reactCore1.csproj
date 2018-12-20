@@ -30,7 +30,6 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="client\js\app.ts" />
-    <TypeScriptCompile Include="client\js\tooltip.d.ts" />
   </ItemGroup>
 
 </Project>

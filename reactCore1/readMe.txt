@@ -17,16 +17,11 @@ I have funky HMR going - at least for javascript.  Use 'dotnet watch run' CLI co
 I also have regular ( WebPackDevMiddleware based) funky HMR going, I.E. without 'dotnet watch run'
 I have Typescript 3.1 running and functioning in the HMR
 I've decided to separate out my 'source' from what is shipped to the browser.  So 'client/' is the thingy I edit
-I've transferred my style definitions to sass  
+I've transferred my style definitions to sass and style-loader.  So, I'm getting funky HMR when I change the .scss.   We're sucking diesel.
  
-I need to get my head around Typescript. I'm not getting output where I expect it.  We're not sucking diesel.
-Meanwhile, trying to sort out type defs for tooltip on jQuery i've lost the definition of my stylesheet.
+I need to get my head around Typescript. I'm not getting output where I expect it: e.g. wtf happened trying to sort out type defs for tooltip on jQuery .
 
 Onward and Upward
-
-Get your TS source to generate its js into the client/js folder
-
-Get the funky HMR for style changes.
 
 get your head around the 'uglify' thingys in sample-25a3681a5fc2 and get a webpack production build implemented with minification and uglification
 

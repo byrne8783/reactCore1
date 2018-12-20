@@ -41,8 +41,8 @@ module.exports = (env = {}, argv = {}) => {
                     test: /\.css$/, use: [{ loader: MiniCssExtractPlugin.loader }, { loader: 'css-loader' }]
                 },
                 {
-                    test: /\.scss$/, use: [{ loader: MiniCssExtractPlugin.loader }
-                        , { loader: 'css-loader' },  { loader: 'sass-loader' }]
+                    test: /\.scss$/, use: [this.mode !== 'development' ? { loader: MiniCssExtractPlugin.loader } : {loader: 'style-loader'}
+                        , { loader: 'css-loader', options: { sourceMap: this.mode === 'development' } }, { loader: 'sass-loader', options: { sourceMap: this.mode === 'development' } }]
                 },
                 {
                     test: /\.ts$/, use: [{ loader: 'ts-loader' }]}
