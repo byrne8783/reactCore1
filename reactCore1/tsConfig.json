@@ -5,8 +5,7 @@
     "module": "es6",
     "newLine": "crlf",
     "noImplicitAny": false,
-    "noEmitOnError": true,
-    "outDir": "./wwwroot/js",
+    "noEmitOnError": false,
     "removeComments": false,
     "sourceMap": true,
     "target": "es5",
@@ -17,12 +16,11 @@
     ]
 
   },
+
   "exclude": [
     "node_modules",
     "bin",
-    "wwwroot",
-    "outDir",
-    "./wwwroot/js/"
-  ],
+    "wwwroot"
+  ]
 
 }

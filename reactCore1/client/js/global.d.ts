@@ -2,3 +2,4 @@
     const content: any;
     export = content;
 }
+

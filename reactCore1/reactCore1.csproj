@@ -14,16 +14,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Remove="wwwroot\js\es6CodeLib.js" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="client\ts\global.d.ts" />
+    <None Remove="client\js\app.ts" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="client\css\" />
-    <Folder Include="client\js\" />
     <Folder Include="Views\Shared\" />
     <Folder Include="wwwroot\dist\lib\" />
   </ItemGroup>
@@ -34,7 +29,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <TypeScriptCompile Include="client\ts\global.d.ts" />
+    <TypeScriptCompile Include="client\js\app.ts" />
+    <TypeScriptCompile Include="client\js\tooltip.d.ts" />
   </ItemGroup>
 
 </Project>
