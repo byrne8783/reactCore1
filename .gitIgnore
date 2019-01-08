@@ -11,6 +11,7 @@
 ## also js is just generated in here;  so its not source
 */wwwroot/dist/*.css
 */wwwroot/dist/*.js
+*/wwwroot/dist/
 */wwwroot/*.js
 */wwwroot/*.js.map
 */wwwroot/js/*.js

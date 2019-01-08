@@ -4,14 +4,15 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - reactCore1</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" 
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"
+          asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+          asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" >
     <environment include="Development">
-        <link rel="stylesheet" href="~/dist/AllStyles.css" />
+        <link rel="stylesheet" href="~/dist/siteStyles.css" />
     </environment>
     <environment exclude="Development">
-        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/4.1.3/css/bootstrap.min.css"
-              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-        <link rel="stylesheet" href="~/dist/SiteStyles.css" />
+        <link rel="stylesheet" href="~/dist/siteStyles.css" />
     </environment>
 </head>
 <body>
@@ -37,7 +38,12 @@
         @RenderBody()
         <hr />
         <footer class="container footer">
-            <p>&copy; 2018 - reactCore1</p>
+            <environment include="Development">
+                <p>&copy; 2018 - reactCore1 ***Development</p>
+            </environment>
+            <environment exclude="Development">
+                <p>&copy; 2018 - reactCore1</p>
+            </environment>
         </footer>
     </div>
 

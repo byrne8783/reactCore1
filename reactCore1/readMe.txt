@@ -19,13 +19,21 @@ I have Typescript 3.1 running and functioning in the HMR
 I've decided to separate out my 'source' from what is shipped to the browser.  So 'client/' is the thingy I edit
 I've transferred my style definitions to sass and style-loader.  So, I'm getting funky HMR when I change the .scss.   We're sucking diesel.
  
-I need to get my head around Typescript. I'm not getting output where I expect it: e.g. wtf happened trying to sort out type defs for tooltip on jQuery .
+I need to get my head around Typescript. I'm not getting output where I wanted it: e.g. wtf happened trying to sort out type defs for tooltip on jQuery .
+
+get your head around the 'uglify' thingys in sample-25a3681a5fc2 and get a webpack production build implemented with minification and uglification
+	slowly , not very surely.  Struggling with the 'separate config files ' approach and have left it dead as webpack.<common,dev,prod>.js.  
+	Have made a connection between the webPack env variable and the VS build using launchSettings.json with conditional targets in the .csproj file???
+
 
 Onward and Upward
 
-get your head around the 'uglify' thingys in sample-25a3681a5fc2 and get a webpack production build implemented with minification and uglification
+
 
 Add React to your projects-a-basic-react-template-sample-25a3681a5fc2
+
+	I'm getting bootstrap css from the CDN in _layout.css. - I'm using the CopyWebPackPlugin to copy these files from node-modules to /lib as a fallback
+															-  then I'de like to figure out how to get version correspondence between what I copy to /lib and what i get from the cdn hmm!
 
 Do the whole thing again, just to be able to understand it, with guidance from https://blogs.taiga.nl/martijn/2018/06/14/lean-asp-net-core-2-1-manually-setup-a-razor-pages-project-with-bootstrap-npm-and-webpack/ 
 

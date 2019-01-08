@@ -1,3 +1,108 @@
+_______________________________________
+const webpack = require('webpack');
+const prod = process.argv.indexOf('-p') !== -1;
+
+module.exports = {
+
+  plugins: [
+    new webpack.DefinePlugin({
+      process.env.NODE_ENV: prod? `"production"`: '"development"'
+        }),
+  ]
+};
+___________________
+new webpack.DefinePlugin({
+  'process.env':{
+    'NODE_ENV': JSON.stringify('production'),
+    'API_URL': JSON.stringify('http://localhost:8080/bands')
+  }
+}),
+
+
+CDN example
+
+This example does not require the jquery module to be installed. It:
+
+    adds jquery to your Webpack config's externals object to exclude it from your bundle, telling it to expect a global object called jQuery (on the window object)
+    adds <script type="text/javascript" src="https://unpkg.com/jquery@3.2.1/dist/jquery.min.js"></script> to your HTML file, before your chunks
+
+new HtmlWebpackExternalsPlugin({
+  externals: [
+    {
+      module: 'jquery',
+      entry: 'https://unpkg.com/jquery@3.2.1/dist/jquery.min.js',
+      global: 'jQuery',
+    },
+  ],
+})
+
+
+
+
+
+
+Before I dd anything to knock Bootstrap out of the Css bundle here's what I got on a Release build...
+_____________________________________________________________________________________________________________________________________________________________________
+1>------ Rebuild All started: Project: reactCore1, Configuration: Release Any CPU ------
+1>reactCore1 -> C:\Users\byr\source\repos\Personal\onGit\reactCore1\reactCore1\bin\Release\netcoreapp2.1\reactCore1.dll
+1>reactCore1 -> C:\Users\byr\source\repos\Personal\onGit\reactCore1\reactCore1\bin\Release\netcoreapp2.1\reactCore1.Views.dll
+1>Performing Webpack production build...
+1>Hash: 4f5d03a953932da706ce
+1>Version: webpack 4.28.0
+1>Time: 2245ms
+1>Built at: 2019-01-04 16:40:23
+1>            Asset     Size  Chunks             Chunk Names
+1>    AllStyles.css  138 KiB    main  [emitted]  main
+1>AllStyles.css.map  173 KiB    main  [emitted]  main
+1>        bundle.js  483 KiB    main  [emitted]  main
+1>    bundle.js.map  601 KiB    main  [emitted]  main
+1>Entrypoint main = AllStyles.css bundle.js AllStyles.css.map bundle.js.map
+1>[./client/css/site.scss] 39 bytes {main} [built]
+1>[./client/js/app.ts] 957 bytes {main} [built]
+1>[./client/js/es5Codelib.js] 370 bytes {main} [built]
+1>[./client/js/es6CodeLib.js] 170 bytes {main} [built]
+1>[./client/js/jq5Codelib.js] 285 bytes {main} [built]
+1>[./client/js/tsCodeLib.ts] 266 bytes {main} [built]
+1>[./node_modules/webpack/buildin/global.js] (webpack)/buildin/global.js 472 bytes {main} [built]
+1>    + 6 hidden modules
+1>Child mini-css-extract-plugin node_modules/css-loader/index.js!node_modules/bootstrap/dist/css/bootstrap.min.css:
+1>    Entrypoint mini-css-extract-plugin = *
+1>       2 modules
+1>Child mini-css-extract-plugin node_modules/css-loader/index.js??ref--5-1!node_modules/sass-loader/lib/loader.js??ref--5-2!client/css/site.scss:
+1>    Entrypoint mini-css-extract-plugin = *
+1>    [./node_modules/css-loader/index.js?!./node_modules/sass-loader/lib/loader.js?!./client/css/site.scss] ./node_modules/css-loader??ref--5-1!./node_modules/sass-loader/lib/loader.js??ref--5-2!./client/css/site.scss 493 bytes {mini-css-extract-plugin} [built]
+1>        + 1 hidden module
+1>Hash: 4f5d03a953932da706ce
+1>Version: webpack 4.28.0
+1>Time: 2285ms
+1>Built at: 2019-01-04 16:40:27
+1>            Asset     Size  Chunks             Chunk Names
+1>    AllStyles.css  138 KiB    main  [emitted]  main
+1>AllStyles.css.map  173 KiB    main  [emitted]  main
+1>        bundle.js  483 KiB    main  [emitted]  main
+1>    bundle.js.map  601 KiB    main  [emitted]  main
+1>Entrypoint main = AllStyles.css bundle.js AllStyles.css.map bundle.js.map
+1>[./client/css/site.scss] 39 bytes {main} [built]
+1>[./client/js/app.ts] 957 bytes {main} [built]
+1>[./client/js/es5Codelib.js] 370 bytes {main} [built]
+1>[./client/js/es6CodeLib.js] 170 bytes {main} [built]
+1>[./client/js/jq5Codelib.js] 285 bytes {main} [built]
+1>[./client/js/tsCodeLib.ts] 266 bytes {main} [built]
+1>[./node_modules/webpack/buildin/global.js] (webpack)/buildin/global.js 472 bytes {main} [built]
+1>    + 6 hidden modules
+1>Child mini-css-extract-plugin node_modules/css-loader/index.js!node_modules/bootstrap/dist/css/bootstrap.min.css:
+1>    Entrypoint mini-css-extract-plugin = *
+1>       2 modules
+1>Child mini-css-extract-plugin node_modules/css-loader/index.js??ref--5-1!node_modules/sass-loader/lib/loader.js??ref--5-2!client/css/site.scss:
+1>    Entrypoint mini-css-extract-plugin = *
+1>    [./node_modules/css-loader/index.js?!./node_modules/sass-loader/lib/loader.js?!./client/css/site.scss] ./node_modules/css-loader??ref--5-1!./node_modules/sass-loader/lib/loader.js??ref--5-2!./client/css/site.scss 493 bytes {mini-css-extract-plugin} [built]
+1>        + 1 hidden module
+========== Rebuild All: 1 succeeded, 0 failed, 0 skipped ==========
+
+
+
+
+_______________________________________________________________________________________________________________________________________________________________________
 -------------------------------------------------------------------------------------------------------------------
 So, trying to get my CSS out of inline styles and into a file it transpires "extract-text-webpack-plugin" is obsolete on WebPack 4 and instead 
 I need to use "mini-css-extract-plugin".  

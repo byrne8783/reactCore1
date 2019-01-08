@@ -4,13 +4,25 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <TypeScriptToolsVersion>3.1</TypeScriptToolsVersion>
 	<TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+    <!-- this bit is doing nothing -->	
+    <ZeRoot>Client\</ZeRoot>	
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>TRACE</DefineConstants>
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
 
   <ItemGroup>
     <Compile Remove="wwwroot\css\**" />
+    <Compile Remove="wwwroot\dist\lib\bootstrap\dist\**" />
     <Content Remove="wwwroot\css\**" />
+    <Content Remove="wwwroot\dist\lib\bootstrap\dist\**" />
     <EmbeddedResource Remove="wwwroot\css\**" />
+    <EmbeddedResource Remove="wwwroot\dist\lib\bootstrap\dist\**" />
     <None Remove="wwwroot\css\**" />
+    <None Remove="wwwroot\dist\lib\bootstrap\dist\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,7 +32,7 @@
   <ItemGroup>
     <Folder Include="client\css\" />
     <Folder Include="Views\Shared\" />
-    <Folder Include="wwwroot\dist\lib\" />
+    <Folder Include="wwwroot\dist\lib\bootstrap\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,4 +44,51 @@
     <TypeScriptCompile Include="client\js\app.ts" />
   </ItemGroup>
 
+  <!-- In development, the dist files won't exist on the first run or when cloning to a different machine, so rebuild them if not already present. -->  
+  <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">
+    <!-- Ensure Node.js is installed -->
+    <Exec Command="node --version" ContinueOnError="true">
+      <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
+    </Exec>
+    <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
+    <Message Importance="high" Text="Performing first-run Webpack development build..." />
+    <Exec Command="node node_modules/webpack/bin/webpack.js --config webpack.config.js" />
+    <Exec Command="node node_modules/webpack/bin/webpack.js" />
+  </Target>  
+  <!-- In Release, we want to do a Webpack build with the production  config -->   
+   <Target Name="ReleaseRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Release' And Exists('wwwroot\dist') ">
+    <Message Importance="high" Text="Performing Webpack production build..." />
+    <Exec Command="node node_modules/webpack/bin/webpack.js --config webpack.config.js --env.prod" />
+    <Exec Command="node node_modules/webpack/bin/webpack.js --env.prod" />
+  </Target>   
+   <!-- In Release, the same thing with the Dist files could happen too -->  
+  <Target Name="ReleaseEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Release' And !Exists('wwwroot\dist') ">
+    <!-- Ensure Node.js is installed -->
+    <Exec Command="node --version" ContinueOnError="true">
+      <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
+    </Exec>
+    <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
+    <Message Importance="high" Text="Confident person eh! Performing first-run Webpack production build..." />
+    <Exec Command="node node_modules/webpack/bin/webpack.js --config webpack.config.js --env.prod" />
+    <Exec Command="node node_modules/webpack/bin/webpack.js --env.prod" />
+  </Target>  
+ 
+
+  
+   <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
+    <Exec Command="npm install" />
+    <Exec Command="node node_modules/webpack/bin/webpack.js --config webpack.config.js --env.prod" />
+    <Exec Command="node node_modules/webpack/bin/webpack.js --env.prod" />	
+    <!-- Include the newly-built files in the publish output -->	
+    <ItemGroup>
+      <DistFiles Include="wwwroot\dist\**" />
+      <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
+        <RelativePath>%(DistFiles.Identity)</RelativePath>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </ResolvedFileToPublish>
+    </ItemGroup>
+  </Target>
+
+ 
+  
 </Project>

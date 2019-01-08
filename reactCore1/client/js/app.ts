@@ -2,8 +2,8 @@
 import JQ5Lib from './jq5Codelib';
 import ES5Lib from './es5Codelib';
 import ES6Lib from './es6CodeLib';
-import 'bootstrap/dist/css/bootstrap.min.css';  //not altogether clear to me how this finds bootstrap
-import 'bootstrap';                             //I'de love to have done this with the plugin too.  Who knows?
+//import 'bootstrap/dist/css/bootstrap.min.css';  //not altogether clear to me how this finds bootstrap
+import 'bootstrap';                             //This runs the global code in Bootstrap's Javascript
 //import * as styles from '../css/site.scss';
 import '../css/site.scss';
 import TSLib from '../js/tsCodeLib';
