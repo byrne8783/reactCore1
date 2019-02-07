@@ -15,11 +15,17 @@
 */wwwroot/*.js
 */wwwroot/*.js.map
 */wwwroot/js/*.js
+*/wwwroot/client/*.js.map
 
 #typescript compile stuff
 #this is the cost of mixing typescript generated and authored .js in the same folder
-/client/app.js
-/client/tscodelib.js
+/client/js/app.js
+/client/js/app.js.map
+/client/js/tscodelib.js
+/client/js/tsCodeLib.js.map
+
+
+
 
 # testing
 /coverage
