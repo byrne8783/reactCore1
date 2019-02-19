@@ -17,10 +17,10 @@
 </head>
 <body>
     <div class="container">
-        <nav class="bg-dark mb-4 navbar navbar-dark navbar-expand-md">
+        <nav class="bg-dark mb-4 navbar navbar-dark navbar-expand-md" role="navigation">
             <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">reactCore1</a>
-            <button aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#topNavbarCollapse" data-toggle="collapse" type="button">
-                <span class="navbar-toggler-icon"></span>
+            <button aria-controls="topLayoutNavbarCollapse" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#topLayoutNavbarCollapse" data-toggle="collapse"  type="button">
+                <span class="navbar-toggler-icon" data-toggle="tooltip" data-placement="left"  title="Click to show/hide"></span>
             </button>
             <div class="navbar-collapse collapse"  id="topLayoutNavbarCollapse">
                 <ul class="mr-auto navbar-nav">
@@ -39,10 +39,10 @@
         <hr />
         <footer class="container footer">
             <environment include="Development">
-                <p>&copy; 2018 - reactCore1 ***Development</p>
+                <p>&copy; 2019 - reactCore1 ***Development</p>
             </environment>
             <environment exclude="Development">
-                <p>&copy; 2018 - reactCore1</p>
+                <p>&copy; 2019 - reactCore1</p>
             </environment>
         </footer>
     </div>
