@@ -19,10 +19,12 @@
 
 #typescript compile stuff
 #this is the cost of mixing typescript generated and authored .js in the same folder
-/client/js/app.js
-/client/js/app.js.map
-/client/js/tscodelib.js
-/client/js/tsCodeLib.js.map
+*/client/js/app.js
+*/client/js/app.js.map
+*/client/js/tsCodeLib.js.map
+*/client/js/*.js.map
+*/client/js/tscodelib.js
+
 
 
 
