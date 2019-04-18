@@ -3,6 +3,7 @@
   "buildOnSave": false,
   "compilerOptions": {
     "module": "es6",
+    "moduleResolution": "node",
     "newLine": "crlf",
     "noImplicitAny": false,
     "noEmitOnError": false,

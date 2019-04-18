@@ -1,71 +1,86 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Http;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.AspNetCore.Identity;
 
+using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using System.Text;
 
 
 namespace ReactCore1.Web
 {
-    public class HomeController : Controller
+    [Route("User/[action]")]
+    [ApiController]
+    public class UserController : ControllerBase
     {
-        #region ____________________________________________constructors
-        public HomeController(
-            UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager,
-            IMemoryCache cache)
+        #region _____________________________________________________________Constructors
+
+
+    public UserController(IdentityDatabase context
+    ,UserManager<ApplicationUser> userManager
+        ,SignInManager<ApplicationUser> signInManager
+            ,IMemoryCache cache)
         {
+            _context = context ?? throw new ArgumentNullException(nameof(context));
             _userManager = userManager;
             _signInManager = signInManager;
             this._cache = cache;
         }
-        #endregion
+
+
+
+    #endregion
+    [HttpGet("[action]")]
         public IActionResult Index()
         {
-            return View();
+            ClaimsPrincipal currentUser = this.User;
+            return Ok(new { CurrentUser = new ApplicationUser (_context.Users.Find(currentUser.FindFirst(ClaimTypes.NameIdentifier).Value)) });
         }
         [AllowAnonymous]
         [HttpPost] // 
         [Produces("application/json")]
-        public async Task<IActionResult> Login([FromBody] LoginRequest loginData)
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<ActionResult> Login([FromBody] LoginRequest loginData)
         {
-            if (ModelState.IsValid)
+            ActionResult result;
+            var aU = _userManager.FindByNameAsync(loginData.UserId).Result;
+            var attempt = aU == null ? await _signInManager.CheckPasswordSignInAsync(aU, loginData.Password, lockoutOnFailure: false)
+                                    : await _signInManager.PasswordSignInAsync(loginData.UserId, loginData.Password, false, lockoutOnFailure: false);
+            if (!attempt.Succeeded && aU != null)
             {
-                var aU = _userManager.FindByNameAsync(loginData.UserId).Result;
-                var result = aU == null  ? await _signInManager.CheckPasswordSignInAsync(aU, loginData.Password,  lockoutOnFailure: false)
-                                        : await _signInManager.PasswordSignInAsync(loginData.UserId, loginData.Password, false, lockoutOnFailure: false);
-                if (!result.Succeeded && aU != null)
-                {
-                    await _signInManager.SignInAsync(aU,true);
-                }
-                var cp = await _signInManager.CreateUserPrincipalAsync(aU);
-                if (_signInManager.IsSignedIn(cp))
-                {
-                    var claims = new List<Claim>
-                    {
-                        new Claim(ClaimTypes.NameIdentifier, aU.Id)
-                        ,new Claim("access_token", GetAccessToken(aU.Id))
-                    };
-                    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme
-                        ,new ClaimsPrincipal(claimsIdentity)
-                        ,new AuthenticationProperties());
-                    return Ok(aU);
-                }
+                await _signInManager.SignInAsync(aU, true);
             }
-            ;
+            var cp = await _signInManager.CreateUserPrincipalAsync(aU);
+            if (_signInManager.IsSignedIn(cp))
+            {
+                var claims = new List<Claim>
+                        {
+                            new Claim(ClaimTypes.NameIdentifier, aU.Id)
+                            ,new Claim("access_token", GetAccessToken(aU.Id))
+                        };
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme
+                    , new ClaimsPrincipal(claimsIdentity)
+                    , new AuthenticationProperties());
+                var x = $"{RouteData.Values["controller"]}.{RouteData.Values["action"]}";
+                result = CreatedAtAction(x, new ResponseData<object>(x, new { UserId = aU.UserName, aU.Name }));
+            }
+            else
+            {
+                result = ValidationProblem(new ValidationProblemDetails() { Title = $"Login Failed for User {loginData?.UserId} " });
+            }
+            return result;
             //await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
             //    new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
             //        {
@@ -88,7 +103,7 @@ namespace ReactCore1.Web
 
 
 
-            return new UnauthorizedResult();
+            //           return new UnauthorizedResult();
 
             //var userId = Guid.NewGuid().ToString();
             //var claims = new List<Claim>
@@ -111,7 +126,7 @@ namespace ReactCore1.Web
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme); // the authentication scheme tells the signout which auth cookie to revoke
-            return View();
+            return Ok();
         }
         public IActionResult Revoke()
         {
@@ -119,9 +134,16 @@ namespace ReactCore1.Web
             var userId = principal?.Claims.First(c => c.Type == ClaimTypes.Name);
             _cache.Set("revoke-" + userId.Value, true);
 
-            return View();
+            return Ok();
         }
+
+
+
+
+
+
         #region ___________________________________________privates
+        private readonly IdentityDatabase _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IMemoryCache _cache;

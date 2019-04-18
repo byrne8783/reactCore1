@@ -2,6 +2,7 @@ Meanwhile :
 https://blogs.taiga.nl/martijn/2017/11/24/building-and-asp-net-core-mvc-app-with-npm-and-webpack-asp-net-core-2-0-edition/      the basis
 https://codeburst.io/how-to-use-webpack-in-asp-net-core-projects-a-basic-react-template-sample-25a3681a5fc2
 https://github.com/natemcmaster/aspnetcore-webpack-hmr-demo
+https://www.red-gate.com/simple-talk/dotnet/net-development/using-auth-cookies-in-asp-net-core/
 provide guidance
 
 Right now :
@@ -29,8 +30,17 @@ get your head around the 'uglify' thingys in sample-25a3681a5fc2 and get a webpa
 Onward and Upward
 
 
+    "babel-loader": "^8.0.4",
+    "babel-preset-react": "^6.24.1",
+Adding a bit of Login as a prelude to Auth.
+At the moment it looks like I'm not getting to that controller function with Firefox; but I am with Chrome.  Jaysus!  on a mickey mouse function like mine.
+Anyway trying to get my head around a minimal Identity compatible thingy.  Looks like I could just do a basic ClaimStore which returned the claims for the cookie?
+
 
 Add React to your projects-a-basic-react-template-sample-25a3681a5fc2
+
+Stick some Auth and authorisation into your app see /using-auth-cookies-in-asp-net-core/
+
 
 	I'm getting bootstrap css from the CDN in _layout.css. - I'm using the CopyWebPackPlugin to copy these files from node-modules to /lib as a fallback
 															-  then I'de like to figure out how to get version correspondence between what I copy to /lib and what i get from the cdn hmm!

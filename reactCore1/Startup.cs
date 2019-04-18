@@ -1,22 +1,53 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Newtonsoft.Json.Serialization;
+using ReactCore1.Extensions;
+using ReactCore1.Web;
 
 namespace ReactCore1
 {
     public class Startup
     {
+        private readonly IHostingEnvironment hostingEnvironment;
+        private readonly ILogger logger;
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            services.AddMemoryCache();
+            services.AddScoped<IdentityDatabase>();
+            services.AddIdentity<ApplicationUser, ApplicationRole>().AddCustomStores();
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options => {
+                    options.Events.OnRedirectToLogin = (context) =>
+                    {
+                        context.Response.StatusCode = 401;
+                        return Task.CompletedTask;
+                    };
+                });
+            services.AddScoped<RevokeAuthenticationEvents>();
+            services.AddTransient<ITicketStore, InMemoryTicketStore>();
+            services.AddMvc()  //options => options.Filters.Add(new AuthorizeFilter())
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                .AddJsonOptions(b =>
+                {
+                    b.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                    b.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,5 +76,12 @@ namespace ReactCore1
                           template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
+        #region _____________________________________________________________________constructors
+        public Startup(IHostingEnvironment env, ILogger<Startup> ler)
+        {
+            hostingEnvironment = env;
+            logger = ler;
+        }
+        #endregion
     }
 }

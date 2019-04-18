@@ -9,7 +9,7 @@ module.exports = (env = {}, argv = {}) => {
     const isDevBuild = !(env && env.prod);
     let config = {
         mode: isDevBuild ? 'development' : argv.mode || 'development',               // "production" | "development" | "whatever"
-        resolve: { extensions: ['*', '.ts', '.js'] },     // supposed to mean 'look in .js and .ts for modules specified without and extension;  but a bit hairy!
+        resolve: { extensions: ['*', '.ts', '.js'] },     // supposed to mean 'look in .js and .ts for modules specified without an extension;  but a bit hairy!
         entry: {
             main: './client/js/app.ts'                // Here is where the application starts executing and webpack starts bundling  
         },
@@ -55,10 +55,6 @@ module.exports = (env = {}, argv = {}) => {
         ],
         module: {
             rules: [
-                // use the two loaders stated for the css files matching the Regex specified to 'test'
-                // the loaders are applied right-to-left
-                //{ test: /\.css$/, use: [{ loader: "style-loader" }, { loader: "css-loader" }] }
-                // { loader: 'postcss-loader' },
                 {
                     test: /\.css$/, use: [{ loader: MiniCssExtractPlugin.loader }
                         , { loader: 'css-loader' }]

@@ -18,4 +18,31 @@ h2 {
    color: lighten(red,25%);
 }
 
+.form-groupL {
+   /*margin-bottom: $form-group-margin-bottom;*/
+   position: relative;
+   display: flex;
+   flex-wrap: wrap; // For form validation feedback
+   align-items: stretch;
+   width: 100%;
+}
 
+
+
+
+
+.placeholder-icon .form-control {
+   padding-left: 1.5rem;
+}
+
+.placeholder-icon .form-control-feedback {
+   position: absolute;
+   z-index: 2;
+   display: block;
+   /*width: 1.375rem;
+   height: 1.375rem;*/
+   line-height: 2.375rem;
+   text-align: center;
+   pointer-events: none;
+   color: #aaa;
+}

@@ -6,6 +6,8 @@
 	<TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <!-- this bit is doing nothing -->	
     <ZeRoot>Client\</ZeRoot>	
+    <PackageId>ReactCore1</PackageId>	
+    <RootNamespace>ReactCore1</RootNamespace>	
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -26,11 +28,20 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Code\IdentityRoleOther.cs" />
+    <Compile Remove="Code\IdentityUserOther.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="client\js\app.ts" />
+    <None Remove="client\js\login.ts" />
+    <None Remove="CodeBACKUP.zip" />
+    <None Remove="Code\keepeeStuff.zip" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="client\css\" />
+    <Folder Include="Code\Domain\" />
     <Folder Include="Views\Shared\" />
     <Folder Include="wwwroot\dist\lib\bootstrap\" />
   </ItemGroup>
@@ -42,6 +53,7 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="client\js\app.ts" />
+    <TypeScriptCompile Include="client\js\login.ts" />
   </ItemGroup>
 
   <!-- In development, the dist files won't exist on the first run or when cloning to a different machine, so rebuild them if not already present. -->  
