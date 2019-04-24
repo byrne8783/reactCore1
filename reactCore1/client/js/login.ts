@@ -1,103 +1,51 @@
-﻿import axios, {AxiosResponse, AxiosError } from 'axios';
-import serverSite from './app';
+﻿import serverSite from './app';
 import ServerGeneral,{ ResponseGeneral, ResponseDataGeneral } from './ServerGeneral'
 export default class Login {
 
-    private id: string;
-    private btn: JQuery;
-    baseUrl: string;
-    constructor(public tagId: string) {
-        this.id = "#" + tagId;
-        this.btn = $(this.id);
+    private dialog: JQuery;btn: JQuery;
+    private userId: JQuery; responseElem: JQuery; loadingIcon: JQuery;
+    constructor(public modalTag: string) {
+        this.dialog = $(`#${modalTag}`);
+        this.dialog.on('show.bs.modal', (evt) => this.showLogin(evt));
+        this.btn = this.dialog.find(`#submitLogin`);
         this.btn.click((evt) => this.submitLogin(evt))
+        this.loadingIcon = this.btn.children(".iconLoadingSignIn");
+        this.userId = this.dialog.find("#userId1");
+        this.responseElem = this.dialog.find(`#happyOut`);
     }
 
-    public  submitLogin(evt: JQuery.Event): void { //, ...args: any[]
-        //Where the '...args' can be anything you like that will give you the number and types of parameters you want.
-        if (($("#userId1").val() != "") && ($("#userId2").val() != "")) {
-            this.ajaxStart();
+    public showLogin(evt: JQuery.Event): void {         // initialise the dialog
+        this.loadingIcon.addClass('d-none');
+        this.userId.removeClass(['is-valid', 'is-invalid']);
+        this.responseElem.text("");
+    }
+
+    public submitLogin(evt: JQuery.Event): void { 
+        if ((this.userId.val() != "") && ($("#userId2").val() != "")) {
+            this.loadingIcon.removeClass('d-none');
             const data = JSON.stringify({
                 userId: $("#userId1").val(),
                 password: $("#userId2").val()
             });
             const serv: ServerGeneral = new ServerGeneral();
-            const resp = serv.post('User/Login', data)
-// process the rsp here 
-            const wtf = resp;
-            this.ajaxStop();
+            serv.post('User/Login', data).then((result) => {
+                if (result.hasValue && !result.error) {
+                    let replyData = result.data.data;
+                    this.responseElem.text(`Welcome back ${replyData.name}`)
+                    this.userId.addClass("is-valid");
+                }
+                else {
+                    this.responseElem.text('OK I got ' + (result.hasValue || '') +
+                        ' with ' + (result.data.id || '') + 
+                        ' and error message : ' + (result.error.message || ''));
+                    this.userId.addClass('is-invalid')
+                }
+                this.loadingIcon.addClass('d-none');
+            });
+
         }
 
     }
-
-    private ajaxStart() {
-        this.btn.show();
-    }
-    private ajaxStop() {
-        this.btn.hide();
-    }
-    //public submitLogin(evt: JQuery.Event): void { //, ...args: any[]
-    //    //Where the '...args' can be anything you like that will give you the number and types of parameters you want.
-    //    if (($("#userId1").val() != "") && ($("#userId2").val() != "")) {
-    //        this.ajaxStart();
-    //        const data = JSON.stringify({
-    //            userId: $("#userId1").val(),
-    //            password: $("#userId2").val()
-    //        });
-    //        //const url = this.baseUrl + '/Home/Login';
-    //        //const ajaxHheaders = {
-    //        //    'Content-Type': 'application/json',
-    //        //};
-    //        //const request1 =  axios.post(url, data, {
-    //        //    headers: ajaxHheaders
-    //        //})
-    //        serverSite.interceptors.response.use((r: any) => {
-    //            let x: any = r;
-    //            return r;
-    //        },
-    //            (e) => {
-    //                let x: any = e;
-    //                return e;
-    //            });
-    //        this.rsp.HasValue = false;
-    //        serverSite.post('User/Login', data)
-    //            .then((response) => {
-    //                this.rsp.raw = response;
-    //                this.rsp.Data = null;
-    //                this.rsp.Error = null;
-    //                this.rsp.status = 0;
-    //                this.rsp.RedirectUrl = "";
-    //                const axError: any = response;
-    //                if (this.isAxiosResponse(response)) {
-    //                    this.rsp.Data = response.data;
-    //                    this.rsp.status = response.status;
-    //                    if (response.status >= 400) {
-    //                        this.rsp.Error = new Error('Status ${response.status} received : ${response.statusText}');
-    //                    }
-    //                }
-    //                else {
-    //                    if (this.isAxiosError(axError)) {
-    //                        this.rsp.Data = axError.message;
-    //                        this.rsp.status = -1;
-    //                        this.rsp.Error = new Error('Error code ${axError.code} : ${axError.message}');
-    //                    }
-    //                }
-    //                this.rsp.HasValue = true;
-    //            })
-    //            .catch((err) => {
-    //                this.rsp.raw = err;
-    //                const axError = <AxiosError>err;
-    //                if (err.hasOwnProperty('code')) {
-
-    //                }
-    //                this.rsp.Error = new Error(err);
-    //                this.rsp.HasValue = true;
-    //            });
-    //        // process the rsp here 
-    //        const wtf = this.rsp;
-    //    }
-    //    this.ajaxStop();
-    //}
-
 
 
 }

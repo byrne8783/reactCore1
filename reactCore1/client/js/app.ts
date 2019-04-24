@@ -12,16 +12,8 @@ import { library, dom as faDom, icon as faIcon, findIconDefinition } from '@fort
 import { fas } from '@fortawesome/free-solid-svg-icons/index.es.js'
 import { faUser } from "@fortawesome/free-solid-svg-icons/faUser.js";
 import { faCaretDown,faKey,faSpinner } from '@fortawesome/free-solid-svg-icons/index.es.js'
-////const myCheck = faIcon(findIconDefinition({ prefix: 'fas', iconName: 'igloo' }));
-//    <span class="caret" > </span>
 
 library.add(faUser,faCaretDown,faKey,faSpinner);
-//const iconUser = findIconDefinition({ iconName: 'user', prefix: 'fas' });
-//const glasses = findIconDefinition({ iconName: 'glasses', prefix: 'fas' });
-////faLibrary.add(faIgloo,faUser);
-
-//const iUser = faIcon(iconUser);
-//const iGlasses = faIcon(glasses);
 
 faDom.watch();  //only if i'm dynamically adding  i tags?
 
@@ -40,7 +32,7 @@ const serverSite = axios.create({
 export default serverSite;
 
 $(document).ready(function () {
-    loginStuff = new Login("submitLogin");
+    loginStuff = new Login("signinModal");
     $("body").tooltip({ selector: '[data-toggle=tooltip]' });
 });
 
