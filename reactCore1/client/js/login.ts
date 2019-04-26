@@ -6,33 +6,45 @@ export default class Login {
     private userId: JQuery; responseElem: JQuery; loadingIcon: JQuery;
     constructor(public modalTag: string) {
         this.dialog = $(`#${modalTag}`);
-        this.dialog.on('show.bs.modal', (evt) => this.showLogin(evt));
+        this.dialog.on('show.bs.modal', (evt:JQuery.Event) => this.showLogin(evt));
         this.btn = this.dialog.find(`#submitLogin`);
-        this.btn.click((evt) => this.submitLogin(evt))
-        this.loadingIcon = this.btn.children(".iconLoadingSignIn");
-        this.userId = this.dialog.find("#userId1");
-        this.responseElem = this.dialog.find(`#happyOut`);
+        this.btn.click((evt: JQuery.Event) => this.submitLogin2(evt))
     }
-
-    public showLogin(evt: JQuery.Event): void {         // initialise the dialog
+    private initialise(evt): void {         // initialise the dialog
+        this.loadingIcon = this.btn.find('svg#iconLoadingSignin');
+        this.userId = this.dialog.find('#userId1');
+        this.responseElem = this.dialog.find(`#happyOut`);
         this.loadingIcon.addClass('d-none');
         this.userId.removeClass(['is-valid', 'is-invalid']);
         this.responseElem.text("");
     }
 
-    public submitLogin(evt: JQuery.Event): void { 
+    public showLogin(evt: JQuery.Event): void {
+        this.initialise(evt);
+    }
+
+    public submitLogin1(evt): void { 
         if ((this.userId.val() != "") && ($("#userId2").val() != "")) {
-            this.loadingIcon.removeClass('d-none');
             const data = JSON.stringify({
                 userId: $("#userId1").val(),
                 password: $("#userId2").val()
             });
             const serv: ServerGeneral = new ServerGeneral();
-            serv.post('User/Login', data).then((result) => {
+            var submitButton = $(evt.target as HTMLButtonElement);
+            var lIcon = submitButton.find('svg#iconLoadingSignin')
+            type uiIndication = () => void;
+            let ui: uiIndication;
+            ui = () => {
+                if (lIcon) {
+                    lIcon.removeClass('d-none');
+                }
+            }
+            serv.postInTime('User/Login', data,ui).then((result) => {
                 if (result.hasValue && !result.error) {
                     let replyData = result.data.data;
                     this.responseElem.text(`Welcome back ${replyData.name}`)
                     this.userId.addClass("is-valid");
+                    lIcon.addClass('d-none');
                 }
                 else {
                     this.responseElem.text('OK I got ' + (result.hasValue || '') +
@@ -40,12 +52,56 @@ export default class Login {
                         ' and error message : ' + (result.error.message || ''));
                     this.userId.addClass('is-invalid')
                 }
-                this.loadingIcon.addClass('d-none');
+                lIcon.addClass('d-none');
             });
 
         }
 
     }
+    public submitLogin2(evt): void {
+        if ((this.userId.val() != "") && ($("#userId2").val() != "")) {
+            const data = JSON.stringify({
+                userId: $("#userId1").val(),
+                password: $("#userId2").val()
+            });
+            const serv: ServerGeneral = new ServerGeneral();
+            var submitButton = $(evt.target as HTMLButtonElement);
+            var lIcon = submitButton.find('svg#iconLoadingSignin')
+            type uiCallback = (result:ResponseGeneral) => void;
+            let ui: uiCallback;
+            ui = (result) => {
+                if (result.hasValue && !result.error) {
+                    var didIt: boolean = false;
+                    if (result.data.id === 'Delay.Timer') {
+                        if (!didIt) {
+                            lIcon.removeClass('d-none');
+                            didIt = true;
+                        }
+                    }
+                    else {
+                        let replyData = result.data.data;
+                        this.responseElem.text(`Welcome back ${replyData.name}`)
+                        this.userId.addClass("is-valid");
+                        lIcon.addClass('d-none');
+                    }
+                }
+                else {
+                    this.responseElem.text('OK I got ' + (result.hasValue || '') +
+                        ' with ' + (result.data.id || '') +
+                        ' and error message : ' + (result.error.message || ''));
+                    this.userId.addClass('is-invalid');
+                    lIcon.addClass('d-none');
+                }
 
+            }
+            serv.postWithProgress('User/Login', data, ui);
+                //.then((result) => {
+            //    var wtf = result;
+            //    lIcon.addClass('d-none');
+            //});
+
+        }
+
+    }
 
 }

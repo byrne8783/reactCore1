@@ -101,3 +101,28 @@ $(document).ready(function() {
       );
     });
 });
+
+some promise stuff https://blog.jcore.com/2016/12/18/promise-me-you-wont-use-promise-race/
+______________________________________________________________________________
+Promise.properRace = function (promises: Array<Promise<ResponseGeneral>>, count = 1, results = []) {
+    var promises: Array<Promise<ResponseGeneral>> = Array.from(promises);
+    if (promises.length < count) { //must have enough contenders to finish
+        return Promise.reject('Race is not finishable');
+    }
+    // There is no way to know which promise is resolved/rejected.
+    // So we map it to a new promise to return the index.
+    let indexPromises = promises.map((p, index) => p.then(() => index, () => { throw index; }));
+    return Promise.race(indexPromises).then(index => {
+        let p = promises.splice(index, 1)[0];         // The promise has resolved, remove it from the list of promises
+        p.then(e => results.push(e));
+        if (count === 1) {            
+            return results; // The race has finished now
+        }
+        return Promise.properRace(promises, count - 1); // Continue the race, but now we expect one less winner because we have found one
+    }, index => {
+        // The promise has rejected, remove it from the list of promises and just 
+        // continue the race without changing the count.
+        promises.splice(index, 1);
+        return Promise.properRace(promises, count);
+    });
+};

@@ -18,8 +18,11 @@ library.add(faUser,faCaretDown,faKey,faSpinner);
 faDom.watch();  //only if i'm dynamically adding  i tags?
 
 import UserGreetings from '../js/components/reactHooks1';
+import { ResponseGeneral } from './ServerGeneral';
 
-let loginStuff;
+
+
+
 
  
 const serverSite = axios.create({
@@ -31,6 +34,7 @@ const serverSite = axios.create({
 });
 export default serverSite;
 
+let loginStuff;
 $(document).ready(function () {
     loginStuff = new Login("signinModal");
     $("body").tooltip({ selector: '[data-toggle=tooltip]' });

@@ -36,7 +36,9 @@ namespace ReactCore1
                 var defaultUsers = new List<User>
                  {
                     new User{ UserId=new Guid("8E446F26-D3FF-4BF0-9474-8F87C969201E"),Email="fred@a.com",FirstName = "Fredrick", LastName = "Murphy"}
+                    ,new User{ UserId=new Guid("87D6A4C2-527B-4225-B5E2-B3E9B0193917"),Email="tom@a.com",FirstName = "Thomas", LastName = "Flanagan"}
                     ,new User{ UserId=new Guid("7B5186E4-6D9C-4147-B50B-870B45FB66D0"),Email="jack@b.com",FirstName = "Jacques", LastName = "Kelly"}
+                    ,new User{ UserId=new Guid("15F92823-00F8-471D-95E2-AA43ABC53C89"),Email="pat@b.com",FirstName = "Patrick", LastName = "Kelly"}
                     ,new User{ UserId=new Guid("CB560CE9-C74B-4DA0-806E-B6DFA39821BA"),Email="mick@c.com",FirstName = "Micheal", LastName = "Byrne"}
                     ,new User{ UserId=new Guid("B4390F01-7B7F-4104-997C-61384C49079A"),Email="tony@d.com",FirstName = "Antonio", LastName = "Ward"}
                  };

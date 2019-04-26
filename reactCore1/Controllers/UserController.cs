@@ -53,6 +53,7 @@ namespace ReactCore1.Web
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult> Login([FromBody] LoginRequest loginData)
         {
+            var minimumDuration = Task.Delay(400);
             ActionResult result;
             var aU = _userManager.FindByNameAsync(loginData.UserId).Result;
             var attempt = aU == null ? await _signInManager.CheckPasswordSignInAsync(aU, loginData.Password, lockoutOnFailure: false)
@@ -80,6 +81,7 @@ namespace ReactCore1.Web
             {
                 result = ValidationProblem(new ValidationProblemDetails() { Title = $"Login Failed for User {loginData?.UserId} " });
             }
+            await minimumDuration;
             return result;
             //await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
             //    new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
