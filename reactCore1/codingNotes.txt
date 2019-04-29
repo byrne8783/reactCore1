@@ -126,3 +126,64 @@ Promise.properRace = function (promises: Array<Promise<ResponseGeneral>>, count 
         return Promise.properRace(promises, count);
     });
 };
+some more promise stuff 
+I had in ServerGeneral
+____________________________________________________________________________
+    public postWithProgress(route: string, data: any, uiCallback?: (result) => void): Promise<ResponseGeneral[]> {
+        const activity = [this.post(route, data), this.delay(100)];
+        for (const p of activity) {
+            p.then((response) => {
+                try {
+                    uiCallback(response);
+                } catch { } finally { };
+            });
+        }
+        return Promise.all(activity);
+    }
+and I had in Login.ts
+__________________________________________________________
+    public submitLogin2(evt): void {
+        if ((this.userId.val() != "") && ($("#userId2").val() != "")) {
+            const data = JSON.stringify({
+                userId: $("#userId1").val(),
+                password: $("#userId2").val()
+            });
+            const serv: ServerGeneral = new ServerGeneral();
+            var submitButton = $(evt.target as HTMLButtonElement);
+            var lIcon = submitButton.find('svg#iconLoadingSignin')
+            type uiCallback = (result:ResponseGeneral) => void;
+            let ui: uiCallback;
+            ui = (result) => {
+                if (result.hasValue && !result.error) {
+                    var didIt: boolean = false;
+                    if (result.data.id === 'Delay.Timer') {
+                        if (!didIt) {
+                            lIcon.removeClass('d-none');
+                            didIt = true;
+                        }
+                    }
+                    else {
+                        let replyData = result.data.data;
+                        this.responseElem.text(`Welcome back ${replyData.name}`)
+                        this.userId.addClass("is-valid");
+                        lIcon.addClass('d-none');
+                    }
+                }
+                else {
+                    this.responseElem.text('OK I got ' + (result.hasValue || '') +
+                        ' with ' + (result.data.id || '') +
+                        ' and error message : ' + (result.error.message || ''));
+                    this.userId.addClass('is-invalid');
+                    lIcon.addClass('d-none');
+                }
+
+            }
+            serv.postWithProgress('User/Login', data, ui);
+                //.then((result) => {
+            //    var wtf = result;
+            //    lIcon.addClass('d-none');
+            //});
+
+        }
+
+    }

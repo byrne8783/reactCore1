@@ -2,16 +2,18 @@
 import ServerGeneral,{ ResponseGeneral, ResponseDataGeneral } from './ServerGeneral'
 export default class Login {
 
-    private dialog: JQuery;btn: JQuery;
-    private userId: JQuery; responseElem: JQuery; loadingIcon: JQuery;
+    private dialog: JQuery;//btn: JQuery;
+    private userId: JQuery; responseElem: JQuery;
+    private loadingIcon: JQuery; 
+
     constructor(public modalTag: string) {
         this.dialog = $(`#${modalTag}`);
         this.dialog.on('show.bs.modal', (evt:JQuery.Event) => this.showLogin(evt));
-        this.btn = this.dialog.find(`#submitLogin`);
-        this.btn.click((evt: JQuery.Event) => this.submitLogin2(evt))
+        const btn = this.dialog.find(`#submitLogin`);
+        btn.click((evt: JQuery.Event) => this.submitLogin(evt))
     }
     private initialise(evt): void {         // initialise the dialog
-        this.loadingIcon = this.btn.find('svg#iconLoadingSignin');
+        this.loadingIcon = this.dialog.find('span#iconLoadingSignin');
         this.userId = this.dialog.find('#userId1');
         this.responseElem = this.dialog.find(`#happyOut`);
         this.loadingIcon.addClass('d-none');
@@ -23,7 +25,7 @@ export default class Login {
         this.initialise(evt);
     }
 
-    public submitLogin1(evt): void { 
+    public submitLogin(evt): void { 
         if ((this.userId.val() != "") && ($("#userId2").val() != "")) {
             const data = JSON.stringify({
                 userId: $("#userId1").val(),
@@ -31,7 +33,7 @@ export default class Login {
             });
             const serv: ServerGeneral = new ServerGeneral();
             var submitButton = $(evt.target as HTMLButtonElement);
-            var lIcon = submitButton.find('svg#iconLoadingSignin')
+            var lIcon = submitButton.find('span#iconLoadingSignin');
             type uiIndication = () => void;
             let ui: uiIndication;
             ui = () => {
@@ -42,63 +44,18 @@ export default class Login {
             serv.postInTime('User/Login', data,ui).then((result) => {
                 if (result.hasValue && !result.error) {
                     let replyData = result.data.data;
+                    lIcon.addClass('d-none');
                     this.responseElem.text(`Welcome back ${replyData.name}`)
                     this.userId.addClass("is-valid");
-                    lIcon.addClass('d-none');
                 }
                 else {
                     this.responseElem.text('OK I got ' + (result.hasValue || '') +
                         ' with ' + (result.data.id || '') + 
                         ' and error message : ' + (result.error.message || ''));
-                    this.userId.addClass('is-invalid')
-                }
-                lIcon.addClass('d-none');
-            });
-
-        }
-
-    }
-    public submitLogin2(evt): void {
-        if ((this.userId.val() != "") && ($("#userId2").val() != "")) {
-            const data = JSON.stringify({
-                userId: $("#userId1").val(),
-                password: $("#userId2").val()
-            });
-            const serv: ServerGeneral = new ServerGeneral();
-            var submitButton = $(evt.target as HTMLButtonElement);
-            var lIcon = submitButton.find('svg#iconLoadingSignin')
-            type uiCallback = (result:ResponseGeneral) => void;
-            let ui: uiCallback;
-            ui = (result) => {
-                if (result.hasValue && !result.error) {
-                    var didIt: boolean = false;
-                    if (result.data.id === 'Delay.Timer') {
-                        if (!didIt) {
-                            lIcon.removeClass('d-none');
-                            didIt = true;
-                        }
-                    }
-                    else {
-                        let replyData = result.data.data;
-                        this.responseElem.text(`Welcome back ${replyData.name}`)
-                        this.userId.addClass("is-valid");
-                        lIcon.addClass('d-none');
-                    }
-                }
-                else {
-                    this.responseElem.text('OK I got ' + (result.hasValue || '') +
-                        ' with ' + (result.data.id || '') +
-                        ' and error message : ' + (result.error.message || ''));
-                    this.userId.addClass('is-invalid');
                     lIcon.addClass('d-none');
+                   this.userId.addClass('is-invalid')
                 }
-
-            }
-            serv.postWithProgress('User/Login', data, ui);
-                //.then((result) => {
-            //    var wtf = result;
-            //    lIcon.addClass('d-none');
-            //});
+            });
 
         }
 

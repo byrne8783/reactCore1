@@ -39,7 +39,7 @@ namespace ReactCore1.Web
 
 
     #endregion
-    [HttpGet("[action]")]
+        [HttpGet("[action]")]
         public IActionResult Index()
         {
             ClaimsPrincipal currentUser = this.User;
@@ -48,21 +48,28 @@ namespace ReactCore1.Web
         [AllowAnonymous]
         [HttpPost] // 
         [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult> Login([FromBody] LoginRequest loginData)
         {
-            var minimumDuration = Task.Delay(400);
+            var minimumDuration = Task.Delay(300);
             ActionResult result;
+            ClaimsPrincipal cp = new ClaimsPrincipal();
             var aU = _userManager.FindByNameAsync(loginData.UserId).Result;
-            var attempt = aU == null ? await _signInManager.CheckPasswordSignInAsync(aU, loginData.Password, lockoutOnFailure: false)
-                                    : await _signInManager.PasswordSignInAsync(loginData.UserId, loginData.Password, false, lockoutOnFailure: false);
-            if (!attempt.Succeeded && aU != null)
+            if (aU != null)
             {
-                await _signInManager.SignInAsync(aU, true);
+                var attempt = await _signInManager.PasswordSignInAsync(loginData.UserId, loginData.Password, false, lockoutOnFailure: false);
+                if (!attempt.Succeeded )
+                {
+                    await _signInManager.SignInAsync(aU, true);
+                }
+                cp = await _signInManager.CreateUserPrincipalAsync(aU);
             }
-            var cp = await _signInManager.CreateUserPrincipalAsync(aU);
+            else
+            {
+                aU = new ApplicationUser();
+            }
             if (_signInManager.IsSignedIn(cp))
             {
                 var claims = new List<Claim>
@@ -75,7 +82,7 @@ namespace ReactCore1.Web
                     , new ClaimsPrincipal(claimsIdentity)
                     , new AuthenticationProperties());
                 var x = $"{RouteData.Values["controller"]}.{RouteData.Values["action"]}";
-                result = CreatedAtAction(x, new ResponseData<object>(x, new { UserId = aU.UserName, aU.Name }));
+                result = AcceptedAtAction(x, new ResponseData<object>(x, new { UserId = aU.UserName, aU.Name }));
             }
             else
             {

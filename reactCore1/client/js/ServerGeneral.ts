@@ -66,10 +66,9 @@ export default class ServerGeneral {
                 return reply;
             })
             .catch((err) => {
-                const reply: ResponseGeneral = { hasValue: false, error: null, redirectUrl: "", data: null, status: 0, raw: null };
-                reply.raw = err;
-                reply.data.id = "message";
-                reply.status = -1;
+                const replyData: ResponseDataGeneral = { id: 'message', data: {}};
+                const reply: ResponseGeneral = {
+                    hasValue: false, error: null, redirectUrl: "", data: replyData, status: -1, raw: err };
                 if (this.isAxiosError(err)) {
                     reply.data.data = err.message;
                     reply.error = new Error(`Error code ${err.code} : ${err.message}`);
@@ -89,34 +88,21 @@ export default class ServerGeneral {
 
     public postInTime(route: string, data: any,ui?:()=>void): Promise<ResponseGeneral> {
         const activity = [this.post(route, data), this.delay(100)];
-        return Promise.race(activity).then((x:ResponseGeneral) => {
+        return Promise.race(activity).then((firstUp:ResponseGeneral) => {
              // show the loading bar https://stackoverflow.com/questions/46376432/understanding-promise-race-usage
             // https://blog.jcore.com/2016/12/18/promise-me-you-wont-use-promise-race/
 			// https://stackoverflow.com/questions/42341331/es6-promise-all-progress
             // https://blog.sessionstack.com/how-javascript-works-event-loop-and-the-rise-of-async-programming-5-ways-to-better-coding-with-2f077c4438b5
-            if (x.hasValue && x.data.id === 'Delay.Timer') {
+            if (firstUp.hasValue && firstUp.data.id === 'Delay.Timer') {
                 try { ui(); } catch { } finally { };    // The timer has resolved,
                 return activity[0];                     // stick with the real thing
             }
             else {
-                return x;                               // the real thing has resolved.  Thats our man
+                return firstUp;                               // the real thing has resolved.  Thats our man
             }
         });
 
     }
-
-    public postWithProgress(route: string, data: any, uiCallback?: (result) => void): Promise<ResponseGeneral[]> {
-        const activity = [this.post(route, data), this.delay(100)];
-        for (const p of activity) {
-            p.then((response) => {
-                try {
-                    uiCallback(response);
-                } catch { } finally { };
-            });
-        }
-        return Promise.all(activity);
-    }
-
 
     constructor() {
         this._serverSite = axios.create({
