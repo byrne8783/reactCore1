@@ -49,7 +49,7 @@ export default class Login {
                     this.userId.addClass("is-valid");
                 }
                 else {
-                    this.responseElem.text('OK I got ' + (result.hasValue || '') +
+                    this.responseElem.text('I got ' + (result.hasValue || '') +
                         ' with ' + (result.data.id || '') + 
                         ' and error message : ' + (result.error.message || ''));
                     lIcon.addClass('d-none');

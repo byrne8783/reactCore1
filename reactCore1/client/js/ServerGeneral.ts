@@ -20,7 +20,7 @@ export default class ServerGeneral {
     private readonly _serverSite: AxiosInstance;
 
     private isAxiosError(obj: any): obj is AxiosError {
-        return typeof obj.message === "string" && typeof obj.name === "string";
+        return typeof obj.message === "string" && 'name' in obj && typeof obj.name === "string";
     }
     private isAxiosResponse(obj: any): obj is AxiosResponse {
         return typeof obj.status === "number" && typeof obj.statusText === "string" && obj.hasOwnProperty('data');
@@ -38,7 +38,8 @@ export default class ServerGeneral {
     public post(route : string,data:any) : Promise<ResponseGeneral> {
         return this._serverSite.post(route, data)
             .then((response) => {
-                const reply: ResponseGeneral = { hasValue: false, error: null, redirectUrl: "", data: null, status: 0, raw: null };
+                const reply: ResponseGeneral = {
+                    hasValue: false, error: null, redirectUrl: "", data: { id: 'message', data: {} }, status: 0, raw: null };
                 reply.raw = response;
                 const axError: any = response;
                 if (this.isAxiosResponse(response)) {
@@ -58,7 +59,12 @@ export default class ServerGeneral {
                     if (this.isAxiosError(axError)) {
                         reply.data.id = "message";
                         reply.data.data = axError.message;
-                        reply.status = -1;
+                        if (axError.hasOwnProperty('response')) {
+                            reply.status = axError.response.status;
+                        }
+                        else {
+                            reply.status = -1;
+                        }
                         reply.error = new Error(`Error code ${axError.code} : ${axError.message}`);
                     }
                 }
@@ -68,10 +74,21 @@ export default class ServerGeneral {
             .catch((err) => {
                 const replyData: ResponseDataGeneral = { id: 'message', data: {}};
                 const reply: ResponseGeneral = {
-                    hasValue: false, error: null, redirectUrl: "", data: replyData, status: -1, raw: err };
+                    hasValue: false, error: null, redirectUrl: "", data: replyData, status: -1, raw: err
+                };
                 if (this.isAxiosError(err)) {
                     reply.data.data = err.message;
-                    reply.error = new Error(`Error code ${err.code} : ${err.message}`);
+                    if (err.hasOwnProperty('response')) {
+                        reply.status = err.response.status;
+                    }
+                    else {
+                        reply.status = -1;
+                    }
+                    let errCode = '';
+                    if ('code' in err) {
+                        errCode = `Error code ${err.code} : `;
+                    }
+                    reply.error = new Error(`${errCode} ${err.message}`);
                 }
                 else {
                     try {
@@ -119,7 +136,7 @@ export default class ServerGeneral {
         },
             (e) => {
                 let x: any = e;
-                return e;
+                return Promise.reject(e);
             });
     }
 }

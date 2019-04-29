@@ -50,7 +50,6 @@ namespace ReactCore1.Web
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult> Login([FromBody] LoginRequest loginData)
         {
             var minimumDuration = Task.Delay(300);
