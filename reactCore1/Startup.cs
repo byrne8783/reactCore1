@@ -28,17 +28,27 @@ namespace ReactCore1
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddMemoryCache();
             services.AddScoped<IdentityDatabase>();
             services.AddIdentity<ApplicationUser, ApplicationRole>().AddCustomStores();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options => {
+                .AddCookie(options =>
+                {
                     options.Events.OnRedirectToLogin = (context) =>
                     {
                         context.Response.StatusCode = 401;
                         return Task.CompletedTask;
                     };
-                });
+                    options.Events.OnRedirectToLogout = (context) =>
+                    {
+                        context.Response.StatusCode = 400;
+                        return Task.CompletedTask;
+                    };
+                    // https://stackoverflow.com/questions/58222039/how-to-change-aspnetcore-identity-application-cookie-expiration
+                    options.Cookie.Name = ".AspNetCore.reactCore1.Cookies"; // defaults to .AspNetCore.Cookies
+                })
+                ;
             services.AddScoped<RevokeAuthenticationEvents>();
             services.AddTransient<ITicketStore, InMemoryTicketStore>();
             services.AddMvc()  //options => options.Filters.Add(new AuthorizeFilter())
@@ -68,6 +78,11 @@ namespace ReactCore1
             }
 
             app.UseStaticFiles();
+
+            app.UseAuthentication();
+
+            IHttpContextAccessor httpContextAccessor = app.ApplicationServices.GetRequiredService<IHttpContextAccessor>();
+            HttpContextExtensions.Configure(httpContextAccessor);
 
             app.UseMvc(routes =>
             {

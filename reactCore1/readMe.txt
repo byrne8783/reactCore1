@@ -32,14 +32,16 @@ Onward and Upward
 
     "babel-loader": "^8.0.4",
     "babel-preset-react": "^6.24.1",
-Adding a bit of Login as a prelude to Auth.
-At the moment it looks like I'm not getting to that controller function with Firefox; but I am with Chrome.  Jaysus!  on a mickey mouse function like mine.
-Anyway trying to get my head around a minimal Identity compatible thingy.  Looks like I could just do a basic ClaimStore which returned the claims for the cookie?
+Added a bit of Login as a prelude to Authorization.
+	Basically I'm running a Login thru UserController.Login . Happily, with Firefox, but there are known problems with Bootstrap dropdowns in Chrome....  
+		Then I'de like to clear-up a few UI issues - the spinner keeps going when there is no request outstanding;  if a field has an error it stays signifying the error 
+		afterr the user has changed and left it.
+		And I'de like to understand why my textboxes don't behave the same across FF,Edge(olde), Chrome...
+And I'de like to move on to Core 3.1....
+Then I'de love to remember what I was trying to do.....
 
 
 Add React to your projects-a-basic-react-template-sample-25a3681a5fc2
-
-Stick some Auth and authorisation into your app see /using-auth-cookies-in-asp-net-core/
 
 
 	I'm getting bootstrap css from the CDN in _layout.css. - I'm using the CopyWebPackPlugin to copy these files from node-modules to /lib as a fallback

@@ -14,28 +14,28 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Identity;
-
-
+using Microsoft.AspNetCore.Http;
 
 namespace ReactCore1.Web
 {
     public class HomeController : Controller
     {
-        #region ____________________________________________constructors
-        public HomeController(
-            UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager,
-            IMemoryCache cache)
-        {
-            _userManager = userManager;
-            _signInManager = signInManager;
-            this._cache = cache;
-        }
-        #endregion
+
         public IActionResult Index()
         {
             return View();
         }
+
+        public IActionResult About()
+        {
+            return View("Index");
+        }
+
+        public IActionResult Contact()
+        {
+            return View("Index");
+        }
+
         [AllowAnonymous]
         [HttpPost] // 
         [Produces("application/json")]
@@ -122,9 +122,10 @@ namespace ReactCore1.Web
             return View();
         }
         #region ___________________________________________privates
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly IMemoryCache _cache;
+        //private readonly UserManager<ApplicationUser> _userManager;
+        //private readonly SignInManager<ApplicationUser> _signInManager;
+        //private readonly IMemoryCache _cache;
+
         /// <summary>
         /// Return a JWT token
         /// </summary>
@@ -154,6 +155,19 @@ namespace ReactCore1.Web
             return handler.WriteToken(token);
         }
         #endregion
+
+        #region ____________________________________________constructors
+        public HomeController(
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
+            IMemoryCache cache) : base(userManager, signInManager, cache)
+        {
+            //_userManager = userManager;
+            //_signInManager = signInManager;
+            //this._cache = cache;
+        }
+        #endregion
+
 
 
     }

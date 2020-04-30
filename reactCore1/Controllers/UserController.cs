@@ -20,20 +20,20 @@ namespace ReactCore1.Web
 {
     [Route("User/[action]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class UserController : ApiController
     {
         #region _____________________________________________________________Constructors
 
 
     public UserController(IdentityDatabase context
-    ,UserManager<ApplicationUser> userManager
-        ,SignInManager<ApplicationUser> signInManager
-            ,IMemoryCache cache)
+            ,UserManager<ApplicationUser> userManager
+            ,SignInManager<ApplicationUser> signInManager
+            ,IMemoryCache cache) : base(userManager, signInManager,cache )
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
-            _userManager = userManager;
-            _signInManager = signInManager;
-            this._cache = cache;
+            //_userManager = userManager;
+            //_signInManager = signInManager;
+            //this._cache = cache;
         }
 
 
@@ -48,11 +48,13 @@ namespace ReactCore1.Web
         [AllowAnonymous]
         [HttpPost] // 
         [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status205ResetContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> Login([FromBody] LoginRequest loginData)
         {
-            var minimumDuration = Task.Delay(300);
+            var minimumDurationMilliS = 300;
             ActionResult result;
             ClaimsPrincipal cp = new ClaimsPrincipal();
             var aU = _userManager.FindByNameAsync(loginData.UserId).Result;
@@ -77,17 +79,36 @@ namespace ReactCore1.Web
                             ,new Claim("access_token", GetAccessToken(aU.Id))
                         };
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme
-                    , new ClaimsPrincipal(claimsIdentity)
-                    , new AuthenticationProperties());
-                var x = $"{RouteData.Values["controller"]}.{RouteData.Values["action"]}";
-                result = AcceptedAtAction(x, new ResponseData<object>(x, new { UserId = aU.UserName, aU.Name }));
+                // there's a ControllerBase.SignIn(ClaimsPrincipal,AuthenticationProperties,CookieAuthenticationDefaults.AuthenticationScheme)
+                // which creates a SignInResult
+                //await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme
+                //    , new ClaimsPrincipal(claimsIdentity)
+                //    , new AuthenticationProperties());
+                // first off my LoginRequest does not have to contain contain a ReturnTo Url value, since it knows where to redirect to
+                // hard to figure out the success response to a login.  
+                var returnToUrl = Url.Action("index", "home", values: null, protocol: Request.Scheme);
+                // 205(ResetContent) looks like the right stuff but nobody uses it
+                var result2 = new AcceptedResult(returnToUrl, new ResponseData<object>(null, new { UserId = aU.UserName, aU.Name })) { StatusCode = StatusCodes.Status205ResetContent };
+                // 202(accepted) is not entirely appropriate since its supposed to indicate something that's not fully finished
+                var result1b = new AcceptedResult(returnToUrl, new ResponseData<object>(null, new { UserId = aU.UserName, aU.Name }));
+                var result1a = AcceptedAtAction(returnToUrl, new ResponseData<object>(null, new { UserId = aU.UserName, aU.Name }));
+                // 201(created) is just as good as Accepted, but usually reserved for persistent creations
+                var result0b = new CreatedResult(returnToUrl, new ResponseData<object>(null, new { UserId = aU.UserName, aU.Name }));
+                var authenticationProperties = new AuthenticationProperties() { IsPersistent = false, AllowRefresh=true };
+
+                var result0a = SignIn(new ClaimsPrincipal(claimsIdentity),authenticationProperties ,CookieAuthenticationDefaults.AuthenticationScheme);
+                
+                result = result0a;
+                minimumDurationMilliS = 300;
             }
             else
             {
                 result = ValidationProblem(new ValidationProblemDetails() { Title = $"Login Failed for User {loginData?.UserId} " });
+                minimumDurationMilliS = 400;
             }
-            await minimumDuration;
+
+
+            await Task.Delay(minimumDurationMilliS);
             return result;
             //await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
             //    new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
@@ -152,9 +173,9 @@ namespace ReactCore1.Web
 
         #region ___________________________________________privates
         private readonly IdentityDatabase _context;
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly IMemoryCache _cache;
+        //private readonly UserManager<ApplicationUser> _userManager;
+        //private readonly SignInManager<ApplicationUser> _signInManager;
+        //private readonly IMemoryCache _cache;
         /// <summary>
         /// Return a JWT token
         /// </summary>

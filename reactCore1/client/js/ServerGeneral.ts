@@ -5,16 +5,25 @@ interface ResponseDataGeneral {
     data: any;
 }
 
+interface HttpHeader {
+    [name: string]: string;
+}
+
+interface HttpHeaders {
+    location: string;
+
+    raw : any
+}
 interface ResponseGeneral {
     hasValue: boolean;
     error: Error;
-    redirectUrl: string;
+    headers: HttpHeaders;
     data: ResponseDataGeneral;
     status: number;
     raw: AxiosResponse<object>;
 }
 
-export { ResponseGeneral, ResponseDataGeneral };
+export { ResponseGeneral, ResponseDataGeneral, HttpHeaders };
 
 export default class ServerGeneral {
     private readonly _serverSite: AxiosInstance;
@@ -31,7 +40,7 @@ export default class ServerGeneral {
 
     private delay(milliS: number) :Promise<ResponseGeneral> {
         const reply: ResponseGeneral = {
-            hasValue: true, error: null, redirectUrl: "", data: { id: 'Delay.Timer', data: `$(milliS)` }, status: 0, raw: null };
+            hasValue: true, error: null, headers: null, data: { id: 'Delay.Timer', data: `$(milliS)` }, status: 0, raw: null };
         return new Promise(resolve => setTimeout(resolve, milliS,reply));
     }
 
@@ -39,7 +48,7 @@ export default class ServerGeneral {
         return this._serverSite.post(route, data)
             .then((response) => {
                 const reply: ResponseGeneral = {
-                    hasValue: false, error: null, redirectUrl: "", data: { id: 'message', data: {} }, status: 0, raw: null };
+                    hasValue: false, error: null, headers: null, data: { id: 'message', data: {} }, status: 0, raw: null };
                 reply.raw = response;
                 const axError: any = response;
                 if (this.isAxiosResponse(response)) {
@@ -51,6 +60,7 @@ export default class ServerGeneral {
                         reply.data.data = response.data;
                     }
                     reply.status = response.status;
+                    reply.headers = this.setReplyHeaders(response);
                     if (response.status >= 400) {
                         reply.error = new Error(`Status ${response.status} received : ${response.statusText}`);
                     }
@@ -61,10 +71,12 @@ export default class ServerGeneral {
                         reply.data.data = axError.message;
                         if (axError.hasOwnProperty('response')) {
                             reply.status = axError.response.status;
+                            reply.headers = this.setReplyHeaders(axError.response);
                         }
                         else {
                             reply.status = -1;
                         }
+
                         reply.error = new Error(`Error code ${axError.code} : ${axError.message}`);
                     }
                 }
@@ -74,12 +86,13 @@ export default class ServerGeneral {
             .catch((err) => {
                 const replyData: ResponseDataGeneral = { id: 'message', data: {}};
                 const reply: ResponseGeneral = {
-                    hasValue: false, error: null, redirectUrl: "", data: replyData, status: -1, raw: err
+                    hasValue: false, error: null, headers: null, data: replyData, status: -1, raw: err
                 };
                 if (this.isAxiosError(err)) {
                     reply.data.data = err.message;
                     if (err.hasOwnProperty('response')) {
                         reply.status = err.response.status;
+                        reply.headers = this.setReplyHeaders(err.response);
                     }
                     else {
                         reply.status = -1;
@@ -119,6 +132,18 @@ export default class ServerGeneral {
             }
         });
 
+    }
+
+    private setReplyHeaders(incoming: any): HttpHeaders {
+        let result: HttpHeaders = {
+            location: '' , raw: null
+        }
+        if (incoming !== null && incoming !== undefined && incoming.hasOwnProperty('headers'))
+        {
+            result.raw = incoming.headers;
+            result.location = incoming.headers.location || result.location;
+        }
+        return result;
     }
 
     constructor() {

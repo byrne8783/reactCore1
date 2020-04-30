@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using ReactCore1.Web;
 using System;
@@ -22,7 +25,9 @@ public static class IdentityBuilderExtensions
         public static IdentityBuilder AddCustomStores(this IdentityBuilder builder)
         {
             builder.Services.AddTransient<IUserStore<ApplicationUser>, ApplicationUserStore>().
-                AddTransient<IRoleStore<ApplicationRole>, ApplicationRoleStore>();
+                AddTransient<IRoleStore<ApplicationRole>, ApplicationRoleStore>()
+                // .AddTransient<IUserClaimStore<ApplicationUser>,ApplicationUserClaimStore>()
+                ;
 
             return builder;
         }
@@ -50,7 +55,45 @@ public static class IdentityBuilderExtensions
     }
 
 
+    public static class HttpRequestExtensions
+    {
 
+        /// <summary>
+        /// Gets the raw target of an HTTP request.
+        /// </summary>
+        /// <returns>Raw target of an HTTP request</returns>
+        /// <remarks>
+        /// ASP.NET Core manipulates the HTTP request parameters exposed to pipeline
+        /// components via the HttpRequest class. This extension method delivers an untainted
+        /// request target. https://tools.ietf.org/html/rfc7230#section-5.3
+        /// </remarks>
+        public static string GetRawTarget(this HttpRequest request)
+        {
+            var httpRequestFeature = request.HttpContext.Features.Get<IHttpRequestFeature>();
+            return httpRequestFeature.RawTarget;
+        }
+    }
+
+    public static class HttpContextExtensions
+    {
+        private static IHttpContextAccessor HttpContextAccessor;
+        public static void Configure(IHttpContextAccessor httpContextAccessor)
+        {
+            HttpContextAccessor = httpContextAccessor;
+        }
+
+        public static Uri GetAbsoluteUri()
+        {
+            var request = HttpContextAccessor.HttpContext.Request;
+            UriBuilder uriBuilder = new UriBuilder() {
+                Scheme = request.Scheme,
+                Host = request.Host.Host,
+                Path = request.Path.ToString(),
+                Query = request.QueryString.ToString()
+            };
+            return uriBuilder.Uri;
+        }
+    }
 
     public static class StringExtensions
     {

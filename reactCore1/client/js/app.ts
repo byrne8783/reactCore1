@@ -8,6 +8,7 @@ import 'bootstrap';                             //This runs the global code in B
 import '../css/site.scss';
 import TSLib from '../js/tsCodeLib';
 import Login from '../js/login';
+import Logout from '../js/logout';
 import { library, dom as faDom, icon as faIcon, findIconDefinition } from '@fortawesome/fontawesome-svg-core/index.es.js';
 import { fas } from '@fortawesome/free-solid-svg-icons/index.es.js'
 import { faUser } from "@fortawesome/free-solid-svg-icons/faUser.js";
@@ -35,8 +36,10 @@ const serverSite = axios.create({
 export default serverSite;
 
 let loginStuff;
+let logoutStuff;
 $(document).ready(function () {
     loginStuff = new Login("signinModal");
+    logoutStuff = new Logout("signoutModal");
     $("body").tooltip({ selector: '[data-toggle=tooltip]' });
 });
 

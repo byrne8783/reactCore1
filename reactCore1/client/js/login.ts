@@ -15,7 +15,7 @@ export default class Login {
     private initialise(evt): void {         // initialise the dialog
         this.loadingIcon = this.dialog.find('span#iconLoadingSignin');
         this.userId = this.dialog.find('#userId1');
-        this.responseElem = this.dialog.find(`#happyOut`);
+        this.responseElem = this.dialog.find(`#happyIn`);
         this.loadingIcon.addClass('d-none');
         this.userId.removeClass(['is-valid', 'is-invalid']);
         this.responseElem.text("");
@@ -47,6 +47,9 @@ export default class Login {
                     lIcon.addClass('d-none');
                     this.responseElem.text(`Welcome back ${replyData.name}`)
                     this.userId.addClass("is-valid");
+                    // sort out any cookies etc you need here then redirect to the returnUrl and / or header location
+                    const currentUrl = $(`#${"requestUrlItem"}`);
+                    window.location.href = currentUrl.attr('returnUrl');
                 }
                 else {
                     this.responseElem.text('I got ' + (result.hasValue || '') +

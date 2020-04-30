@@ -6,18 +6,44 @@
 <ul id="fillthiswithUserGreetings" class="nav navbar-nav navbar-right">
     <li class="nav-item">
         <div class="btn-group open">
-            <a id="signinModalOpen" data-toggle="modal" data-target="#signinModal" data-keyboard="false" class="btn btn-outline-secondary nav-link" href="#">
-                <i class="fas fa-user fa-fw"></i>Login
-                <span class="fas fa-caret-down dropdown-toggle" data-toggle="dropdown" data-target="#signupMenu" title="Toggle dropdown menu"></span>
-            </a>
-            <ul id="signupMenu" class="dropdown-menu">
-                <li><a href="#"><i class="fas fa-user fa-fw"></i>Register</a></li>
-            </ul>
-        </div>
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <a class="btn btn-outline-secondary nav-link" asp-area="" asp-controller="Personal" asp-action="Index">
+                    <i class="fas fa-user fa-fw"></i>aNameGoesHere
+                    <span class="fas fa-caret-down dropdown-toggle" data-toggle="dropdown" data-target="#signoutMenu" title="Toggle dropdown menu"></span>
+                </a>
+                <ul id="signoutMenu" class="dropdown-menu">
+                    <li>
+                        <a id="signoutModalOpen" data-toggle="modal" data-target="#signoutModal" data-keyboard="false" class="btn btn-outline-secondary nav-link" href="#">
+                            <i class="fas fa-user fa-fw"></i>Logout
+                         </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fas fa-user fa-fw"></i>Number2
+                        </a>
+                    </li>
+                </ul>
+            }
+            else
+            {
+                    <a id="signinModalOpen" data-toggle="modal" data-target="#signinModal" data-keyboard="false" class="btn btn-outline-secondary nav-link" href="#">
+                        <i class="fas fa-user fa-fw"></i>Login
+                        <span class="fas fa-caret-down dropdown-toggle" data-toggle="dropdown" data-target="#signupMenu" title="Toggle dropdown menu"></span>
+                    </a>
+                    <ul id="signupMenu" class="dropdown-menu">
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-user fa-fw"></i>Register
+                            </a>
+                        </li>
 
-    </li>
+                    </ul>
+            }
+        </div>
+        </li>
 </ul>
-<!-- Modal Dialog -->
+<!-- Modal Dialog for login-->
 <div id="signinModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="signinModalLabel">
     <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
         <div class="modal-content">
@@ -35,8 +61,8 @@
                         <div class="input-group-prepend">
                             <span id="iconPrependUserid" class="input-group-text"><i class="fas fa-user fa-fw"></i></span>
                         </div>
-                        <input id="userId1" name="userId1" type="text" class="form-control" placeholder="Username input" autocomplete="on" aria-label="Username" aria-describedby="iconPrependUserid">
-                        <div id="happyOut" class="valid-feedback">
+                        <input id="userId1" name="userId1" type="text" class="form-control" placeholder="Username input" autocomplete="username" aria-label="Username" aria-describedby="iconPrependUserid">
+                        <div id="happyIn" class="valid-feedback">
                             Some text when login is successful
                         </div>
                     </div>
@@ -45,26 +71,54 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="iconPrependPassword"><i class="fas fa-key fa-fw"></i></span>
                         </div>
-                        <input id="userId2" type="password" class="form-control" placeholder="password input" autocomplete="off" aria-label="Password" aria-describedby="iconPrependPassword">
+                        <input id="userId2" type="password" class="form-control" placeholder="password input" autocomplete="current-password" aria-label="Password" aria-describedby="iconPrependPassword">
                     </div>
                     <div class="form-group">
-                        
                         <button type="button" id="submitLogin" class="btn btn-primary btn-block">
                             Login&nbsp;
                             <span id="iconLoadingSignin" class="d-none"><i class="fas fa-spinner fa-spin"></i></span>
                         </button>
-
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal" >Close</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-
-
 </div>
+<!-- Modal Dialog for logout-->
+<div id="signoutModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="signoutModalLabel">
+    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="signoutModalLabel">Are you sure you want to logout?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form role="form" method="post">
+                    <div id="happyOut" class="valid-feedback">
+                        Some text for logout user responses
+                    </div>
+                    <div class="form-group">
+                        <button type="button" id="submitLogout" class="btn btn-primary btn-block">
+                            Logout&nbsp;
+                            <span id="iconLoadingSignout" class="d-none"><i class="fas fa-spinner fa-spin"></i></span>
+                        </button>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 
 @*
             @if (SignInManager.IsSignedIn(User))
