@@ -1,6 +1,7 @@
 ﻿
 @{
     ViewData["Title"] = "Home";
+    ViewData["returnUrl"] = Context.Request.GetEncodedUrl();
 }
 <div class="row">
     <div class="col-sm-8"><h2>@ViewData["Title"]</h2></div>

@@ -42,7 +42,6 @@
   <ItemGroup>
     <Folder Include="client\css\" />
     <Folder Include="Code\Domain\" />
-    <Folder Include="Views\Shared\" />
     <Folder Include="wwwroot\dist\lib\bootstrap\" />
   </ItemGroup>
 

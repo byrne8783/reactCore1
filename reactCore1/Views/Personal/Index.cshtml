@@ -1,6 +1,10 @@
-﻿
+﻿@using Microsoft.AspNetCore.Identity
+@using ReactCore1.Web
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 @{
     ViewData["Title"] = "Personal Information";
+    ViewData["returnUrl"] = Url.Action("index", "home", values: null, protocol: Context.Request.Scheme); ;
 }
 <div class="row">
     <div class="col-sm-8"><h2>@ViewData["Title"]</h2></div>
@@ -10,16 +14,23 @@
 
 <div class="row">
     <div class="col-md-6">
-        <p>Your account contains personal data that you have given us. This page allows you to edit, download or delete that data.</p>
-        <p>
-            <strong>Deleting this data will permanently remove your account, and this cannot be recovered.</strong>
-        </p>
-        <form id="download-data" asp-page="DownloadPersonalData" method="post" class="form-group">
-            <button class="btn btn-primary" type="submit">Download</button>
-        </form>
-        <p>
-            <a id="delete" asp-page="DeletePersonalData" class="btn btn-primary">Delete</a>
-        </p>
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <p>Your account contains personal data that you have given us. This page allows you to edit, download or delete that data.</p>
+            <p>
+                <strong>Deleting this data will permanently remove your account, and this cannot be recovered.</strong>
+            </p>
+            <form id="download-data" asp-page="/DownloadPersonalData" method="post" class="form-group">
+                <button class="btn btn-primary" type="submit">Download</button>
+            </form>
+            <p>
+                <a id="delete" asp-page="/DeletePersonalData" class="btn btn-primary">Delete</a>
+            </p>
+        }
+        else
+        {
+            <p>This page is intentionally blank.</p>
+        }
     </div>
 </div>
 

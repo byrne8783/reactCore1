@@ -63,7 +63,7 @@ namespace ReactCore1.Web
                 var attempt = await _signInManager.PasswordSignInAsync(loginData.UserId, loginData.Password, false, lockoutOnFailure: false);
                 if (!attempt.Succeeded )
                 {
-                    await _signInManager.SignInAsync(aU, true);
+                    await _signInManager.SignInAsync(aU, false);
                 }
                 cp = await _signInManager.CreateUserPrincipalAsync(aU);
             }
@@ -151,12 +151,25 @@ namespace ReactCore1.Web
 
         }
 
-        [AllowAnonymous]
+        [Authorize]
         public async Task<IActionResult> Logout()
         {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme); // the authentication scheme tells the signout which auth cookie to revoke
+            try { 
+            //bool? isSignedInStart,isSignedInEnd;
+            //try { isSignedInStart = _signInManager.IsSignedIn(User); } catch { };
+            // await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme); // the authentication scheme tells the signout which auth cookie to revoke
+            //try { isSignedInEnd = _signInManager.IsSignedIn(User); } catch { };
+            await this._signInManager.SignOutAsync();
+            //try { isSignedInEnd = _signInManager.IsSignedIn(User); } catch { };
+            // var signOutResult = SignOut(CookieAuthenticationDefaults.AuthenticationScheme);  this does not do it
             return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
         }
+
         public IActionResult Revoke()
         {
             var principal = HttpContext.User as ClaimsPrincipal;
@@ -165,10 +178,6 @@ namespace ReactCore1.Web
 
             return Ok();
         }
-
-
-
-
 
 
         #region ___________________________________________privates

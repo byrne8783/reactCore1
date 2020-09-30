@@ -9,10 +9,10 @@
             @if (SignInManager.IsSignedIn(User))
             {
                 <a class="btn btn-outline-secondary nav-link" asp-area="" asp-controller="Personal" asp-action="Index">
-                    <i class="fas fa-user fa-fw"></i>aNameGoesHere
+                    <i class="fas fa-user fa-fw"></i>@User.Identity.Name
                     <span class="fas fa-caret-down dropdown-toggle" data-toggle="dropdown" data-target="#signoutMenu" title="Toggle dropdown menu"></span>
                 </a>
-                <ul id="signoutMenu" class="dropdown-menu">
+                <ul id="signoutMenu" class="dropdown-menu"  style="background-color : #3d3d3c;">
                     <li>
                         <a id="signoutModalOpen" data-toggle="modal" data-target="#signoutModal" data-keyboard="false" class="btn btn-outline-secondary nav-link" href="#">
                             <i class="fas fa-user fa-fw"></i>Logout
@@ -20,7 +20,7 @@
                     </li>
                     <li>
                         <a href="#">
-                            <i class="fas fa-user fa-fw"></i>Number2
+                            <i class="fas fa-user fa-fw"></i>Nore
                         </a>
                     </li>
                 </ul>
@@ -62,9 +62,7 @@
                             <span id="iconPrependUserid" class="input-group-text"><i class="fas fa-user fa-fw"></i></span>
                         </div>
                         <input id="userId1" name="userId1" type="text" class="form-control" placeholder="Username input" autocomplete="username" aria-label="Username" aria-describedby="iconPrependUserid">
-                        <div id="happyIn" class="valid-feedback">
-                            Some text when login is successful
-                        </div>
+                        <div id="happyIn" class="valid-feedback">Some text when login is successful</div>
                     </div>
                     <label for="userId2" class="">Password</label>
                     <div class="input-group mb-3">
@@ -117,61 +115,4 @@
     </div>
 </div>
 
-
-
-
-@*
-            @if (SignInManager.IsSignedIn(User))
-            {
-                <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post" id="logoutForm" class="navbar-right">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
-                        </li>
-                        <li class="nav-item">
-                            <button type="submit" class="btn btn-link navbar-btn navbar-link">Logout</button>
-                        </li>
-                    </ul>
-                </form>
-
-    <ul class="nav navbar-nav flex-row justify-content-between ml-auto">
-            <li class="nav-item order-2 order-md-1"><a href="#" class="nav-link" title="settings"><i class="fa fa-cog fa-fw fa-lg"></i></a></li>
-            <li class="dropdown order-1">
-                <button type="button" id="dropdownMenu1" data-toggle="dropdown" class="btn btn-outline-secondary dropdown-toggle">Login <span class="caret"></span></button>
-                <ul class="dropdown-menu dropdown-menu-right mt-2">
-                    <li class="px-3 py-2">
-                        <form class="form" role="form">
-                            <div class="form-group">
-                                <input id="emailInput" placeholder="EMail" class="form-control form-control-sm" type="text" required="">
-                            </div>
-
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-primary btn-block">Login</button>
-                            </div>
-
-                        </form>
-                    </li>
-                </ul>
-            </li>
-        </ul>
-
-        }
-        else
-    {}*@
-
-
-@*  something olde
-    <ul class="dropdown-menu dropdown-menu-right mt-2">
-        <li class="px-3 py-2">
-            <form class="form" role="form">
-                <div class="form-group">
-                    <input id="emailInput" placeholder="EMail" class="form-control form-control-sm" type="text" required="">
-                </div>
-                <div class="form-group">
-                    <button type="submit" asp-area="" asp-controller="Home" asp-action="Login" class="btn btn-primary btn-block">Login</button>
-                </div>
-
-            </form>
-        </li>
-    </ul>*@
 

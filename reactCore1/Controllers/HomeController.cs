@@ -20,7 +20,7 @@ namespace ReactCore1.Web
 {
     public class HomeController : Controller
     {
-
+        #region _______________________________________________Actions
         public IActionResult Index()
         {
             return View();
@@ -35,6 +35,16 @@ namespace ReactCore1.Web
         {
             return View("Index");
         }
+
+
+        public IActionResult ShowSignout(string aParameter)
+        {
+            ViewData["aParameter"] = aParameter;
+            return PartialView("_PopupLogout", ViewData);
+        }
+
+
+
 
         [AllowAnonymous]
         [HttpPost] // 
@@ -107,12 +117,12 @@ namespace ReactCore1.Web
 
         }
 
-        [AllowAnonymous]
-        public async Task<IActionResult> Logout()
-        {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme); // the authentication scheme tells the signout which auth cookie to revoke
-            return View();
-        }
+        //[AllowAnonymous]
+        //public async Task<IActionResult> Logout()
+        //{
+        //    await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme); // the authentication scheme tells the signout which auth cookie to revoke
+        //    return View();
+        //}
         public IActionResult Revoke()
         {
             var principal = HttpContext.User as ClaimsPrincipal;
@@ -121,6 +131,9 @@ namespace ReactCore1.Web
 
             return View();
         }
+
+        #endregion
+
         #region ___________________________________________privates
         //private readonly UserManager<ApplicationUser> _userManager;
         //private readonly SignInManager<ApplicationUser> _signInManager;

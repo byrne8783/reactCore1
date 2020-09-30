@@ -44,7 +44,7 @@ export default class ServerGeneral {
         return new Promise(resolve => setTimeout(resolve, milliS,reply));
     }
 
-    public post(route : string,data:any) : Promise<ResponseGeneral> {
+    public post(route: string, data: any): Promise<ResponseGeneral> {
         return this._serverSite.post(route, data)
             .then((response) => {
                 const reply: ResponseGeneral = {
@@ -76,32 +76,31 @@ export default class ServerGeneral {
                         else {
                             reply.status = -1;
                         }
-
                         reply.error = new Error(`Error code ${axError.code} : ${axError.message}`);
                     }
                 }
                 reply.hasValue = true;
                 return reply;
             })
-            .catch((err) => {
+            .catch((err:any) => {
                 const replyData: ResponseDataGeneral = { id: 'message', data: {}};
                 const reply: ResponseGeneral = {
                     hasValue: false, error: null, headers: null, data: replyData, status: -1, raw: err
                 };
                 if (this.isAxiosError(err)) {
                     reply.data.data = err.message;
-                    if (err.hasOwnProperty('response')) {
-                        reply.status = err.response.status;
+                    if (err.hasOwnProperty('response') && !(err.response == null )) {
                         reply.headers = this.setReplyHeaders(err.response);
-                    }
-                    else {
-                        reply.status = -1;
+                        if (err.response.hasOwnProperty('status') && !(err.response == null)) {
+                            reply.status = err.response.status || -1;
+                        }
                     }
                     let errCode = '';
                     if ('code' in err) {
-                        errCode = `Error code ${err.code} : `;
+                        errCode = `Error code ${err.code || errCode} : `;
                     }
                     reply.error = new Error(`${errCode} ${err.message}`);
+                    reply.data.id = errCode;
                 }
                 else {
                     try {
@@ -148,7 +147,7 @@ export default class ServerGeneral {
 
     constructor() {
         this._serverSite = axios.create({
-            baseURL: window.location.protocol + "//" + window.location.host + "/" + window.location.pathname.split('/')[1],
+            baseURL: window.location.protocol + "//" + window.location.host + "/", // + window.location.pathname.split('/')[1]
             timeout: 20000,
             headers: {
                 'X-Custom-Header': 'foobar',

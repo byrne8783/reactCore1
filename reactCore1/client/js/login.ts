@@ -3,26 +3,28 @@ import ServerGeneral,{ ResponseGeneral, ResponseDataGeneral } from './ServerGene
 export default class Login {
 
     private dialog: JQuery;//btn: JQuery;
-    private userId: JQuery; responseElem: JQuery;
+    private userId: JQuery; private responseElem: JQuery;
     private loadingIcon: JQuery; 
 
     constructor(public modalTag: string) {
         this.dialog = $(`#${modalTag}`);
-        this.dialog.on('show.bs.modal', (evt:JQuery.Event) => this.showLogin(evt));
+        this.dialog.on('show.bs.modal', (evt:JQuery.Event) => this.initLogin(evt));
         const btn = this.dialog.find(`#submitLogin`);
         btn.click((evt: JQuery.Event) => this.submitLogin(evt))
-    }
-    private initialise(evt): void {         // initialise the dialog
-        this.loadingIcon = this.dialog.find('span#iconLoadingSignin');
         this.userId = this.dialog.find('#userId1');
-        this.responseElem = this.dialog.find(`#happyIn`);
-        this.loadingIcon.addClass('d-none');
-        this.userId.removeClass(['is-valid', 'is-invalid']);
-        this.responseElem.text("");
+        this.userId.off("change").on("change", (evt: JQuery.Event) => this.clearDialog(evt));
     }
 
-    public showLogin(evt: JQuery.Event): void {
-        this.initialise(evt);
+    private clearDialog(evt): void {
+        this.userId.removeClass(['is-valid', 'is-invalid']);
+        this.responseElem.text("").hide();
+    }
+
+    public initLogin(evt: JQuery.Event): void {
+        this.loadingIcon = this.dialog.find('span#iconLoadingSignin');
+        this.responseElem = this.dialog.find(`#happyIn`);
+        this.loadingIcon.addClass('d-none');
+        this.clearDialog(evt);
     }
 
     public submitLogin(evt): void { 
@@ -43,18 +45,17 @@ export default class Login {
             }
             serv.postInTime('User/Login', data,ui).then((result) => {
                 if (result.hasValue && !result.error) {
-                    let replyData = result.data.data;
                     lIcon.addClass('d-none');
-                    this.responseElem.text(`Welcome back ${replyData.name}`)
+                    this.responseElem.removeClass('invalid-feedback').addClass('valid-feedback').show().text(`Welcome back.`);
                     this.userId.addClass("is-valid");
                     // sort out any cookies etc you need here then redirect to the returnUrl and / or header location
                     const currentUrl = $(`#${"requestUrlItem"}`);
                     window.location.href = currentUrl.attr('returnUrl');
                 }
                 else {
-                    this.responseElem.text('I got ' + (result.hasValue || '') +
-                        ' with ' + (result.data.id || '') + 
-                        ' and error message : ' + (result.error.message || ''));
+                    this.responseElem.text('I got code "' + (result.data.id || '') + 
+                        '" and error message : " ' + (result.error.message || '')) +  '"';
+                    this.responseElem.removeClass('valid-feedback').addClass('invalid-feedback').show();
                     lIcon.addClass('d-none');
                    this.userId.addClass('is-invalid')
                 }

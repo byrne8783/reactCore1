@@ -17,7 +17,7 @@
 </head>
 <body>
     <div class="container">
-        <nav class="bg-dark mb-4 navbar navbar-dark navbar-expand-md" role="navigation" returnUrl="@Context.Request.GetEncodedUrl()" id="requestUrlItem">
+        <nav class="bg-dark mb-4 navbar navbar-dark navbar-expand-md" role="navigation" returnUrl="@ViewData["returnUrl"].ToString()" id="requestUrlItem">
             <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">reactCore1</a>
             <button type="button" class="navbar-toggler" data-target="#topLayoutNavbarCollapse" data-toggle="collapse" aria-controls="topLayoutNavbarCollapse" aria-expanded="false" aria-label="Toggle navigation" >
                 <span class="navbar-toggler-icon" data-toggle="tooltip" data-placement="left"  title="Click to show/hide"></span>
