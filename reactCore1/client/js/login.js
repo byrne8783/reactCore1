@@ -4,20 +4,21 @@ var Login = /** @class */ (function () {
         var _this = this;
         this.modalTag = modalTag;
         this.dialog = $("#" + modalTag);
-        this.dialog.on('show.bs.modal', function (evt) { return _this.showLogin(evt); });
+        this.dialog.on('show.bs.modal', function (evt) { return _this.initLogin(evt); });
         var btn = this.dialog.find("#submitLogin");
         btn.click(function (evt) { return _this.submitLogin(evt); });
-    }
-    Login.prototype.initialise = function (evt) {
-        this.loadingIcon = this.dialog.find('span#iconLoadingSignin');
         this.userId = this.dialog.find('#userId1');
+        this.userId.off("change").on("change", function (evt) { return _this.clearDialog(evt); });
+    }
+    Login.prototype.clearDialog = function (evt) {
+        this.userId.removeClass(['is-valid', 'is-invalid']);
+        this.responseElem.text("").hide();
+    };
+    Login.prototype.initLogin = function (evt) {
+        this.loadingIcon = this.dialog.find('span#iconLoadingSignin');
         this.responseElem = this.dialog.find("#happyIn");
         this.loadingIcon.addClass('d-none');
-        this.userId.removeClass(['is-valid', 'is-invalid']);
-        this.responseElem.text("");
-    };
-    Login.prototype.showLogin = function (evt) {
-        this.initialise(evt);
+        this.clearDialog(evt);
     };
     Login.prototype.submitLogin = function (evt) {
         var _this = this;
@@ -37,18 +38,17 @@ var Login = /** @class */ (function () {
             };
             serv.postInTime('User/Login', data, ui).then(function (result) {
                 if (result.hasValue && !result.error) {
-                    var replyData = result.data.data;
                     lIcon.addClass('d-none');
-                    _this.responseElem.text("Welcome back " + replyData.name);
+                    _this.responseElem.removeClass('invalid-feedback').addClass('valid-feedback').show().text("Welcome back.");
                     _this.userId.addClass("is-valid");
                     // sort out any cookies etc you need here then redirect to the returnUrl and / or header location
                     var currentUrl = $("#" + "requestUrlItem");
                     window.location.href = currentUrl.attr('returnUrl');
                 }
                 else {
-                    _this.responseElem.text('I got ' + (result.hasValue || '') +
-                        ' with ' + (result.data.id || '') +
-                        ' and error message : ' + (result.error.message || ''));
+                    _this.responseElem.text('I got code "' + (result.data.id || '') +
+                        '" and error message : " ' + (result.error.message || '')) + '"';
+                    _this.responseElem.removeClass('valid-feedback').addClass('invalid-feedback').show();
                     lIcon.addClass('d-none');
                     _this.userId.addClass('is-invalid');
                 }
