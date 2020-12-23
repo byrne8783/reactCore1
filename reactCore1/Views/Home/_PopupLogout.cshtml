@@ -1,0 +1,31 @@
+@*@model MVC.Models.TokenModel*@
+
+@{
+    Layout = "~/Views/Shared/_LayoutPopupModal.cshtml";
+    ViewData["Id"] = "signoutModal";
+    ViewData["IdLabel"] = "signoutModalLabel";
+    ViewData["Title"] = "Are you sure you want to logout?";
+    ViewData["WidthBreak"] = "modal-sm";
+    ViewData["PositionClass"] = "modal-dialog-centered";
+}
+
+@section Content {
+    <div class="modal-body">
+        <form role="form" method="post">
+            <div id="happyOut" class="valid-feedback">
+                Some text for logout user responses
+            </div>
+            <div class="form-group">
+                <button type="button" id="submitSignout" class="btn btn-primary btn-block">
+                    Logout now&nbsp;
+                    <span id="iconLoadingSignout" class="d-none"><i class="fas fa-spinner fa-spin"></i></span>
+                </button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel Logout</button>
+            </div>
+        </form>
+    </div>
+}
+
+@Html.ValidationSummary(false)

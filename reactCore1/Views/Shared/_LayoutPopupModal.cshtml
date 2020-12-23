@@ -1,0 +1,21 @@
+@{
+    string id = (string)ViewData["Id"];
+    string idLabel = (string)ViewData["IdLabel"];
+    string title = (ViewData["Title"] != null) ? (string)ViewData["Title"] : String.Empty;
+    string widthBreak = (ViewData["WidthBreak"] != null) ? (string)ViewData["WidthBreak"] : "modal-sm";
+    string positionClass = (ViewData["PositionClass"] != null) ? (string)ViewData["PositionClass"] : "modal-dialog-centered";
+}
+
+    <div id="@id" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="@idLabel">
+        <div class="modal-dialog @positionClass @widthBreak" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="@idLabel">@title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                @RenderSection("Content")
+            </div>
+        </div>
+    </div>
