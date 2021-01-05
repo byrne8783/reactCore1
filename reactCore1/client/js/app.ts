@@ -1,4 +1,4 @@
-﻿import axios, { AxiosResponse, AxiosError ,AxiosInstance} from 'axios'
+﻿import axios, { AxiosResponse, AxiosError, AxiosInstance } from 'axios';
 import JQ5Lib from './jq5Codelib';
 import ES5Lib from './es5Codelib';
 import ES6Lib from './es6CodeLib';
@@ -10,7 +10,7 @@ import TSLib from '../js/tsCodeLib';
 import Login from '../js/login';
 import Logout from '../js/logout';
 import { library, dom as faDom, icon as faIcon, findIconDefinition } from '@fortawesome/fontawesome-svg-core/index.es.js';
-import { fas } from '@fortawesome/free-solid-svg-icons/index.es.js'
+import { fas } from '@fortawesome/free-solid-svg-icons/index.es.js';
 import { faUser } from "@fortawesome/free-solid-svg-icons/faUser.js";
 import { faCaretDown,faKey,faSpinner } from '@fortawesome/free-solid-svg-icons/index.es.js'
 
