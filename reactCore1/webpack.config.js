@@ -35,10 +35,11 @@ module.exports = (env = {}, argv = {}) => {
                 ]
         },
         plugins: [
-            new CopyWebpackPlugin([
-                {
-                    from: 'bootstrap/dist/css/bootstrap.min.*', to: 'lib/bootstrap/css/', context: 'node_modules', force: true,flatten:true
-                }]),
+            new CopyWebpackPlugin({patterns:
+                [
+                {from: 'bootstrap/dist/css/bootstrap.min.*', to: 'lib/bootstrap/css/', context: 'node_modules', force: true}
+                ]}
+            ),
             new MiniCssExtractPlugin({
                 // Options similar to the same options in webpackOptions.output
                 // both options are optional.  somewhere in here I say AllStypes.css
@@ -76,5 +77,5 @@ module.exports = (env = {}, argv = {}) => {
             }
         };
     }
-    return config;
+    return config;                                     // this is the one
 };

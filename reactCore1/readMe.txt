@@ -16,7 +16,7 @@ I have my css ( practically site.css and bootstrap ) being bundled into a file c
 I have my webpack config set up to permit definition of a 'production' build.  I don't have one yet, but I don't need it at the moment
 I have funky HMR going - at least for javascript.  Use 'dotnet watch run' CLI command to have it in action
 I also have regular ( WebPackDevMiddleware based) funky HMR going, I.E. without 'dotnet watch run'
-I have Typescript 3.1 running and functioning in the HMR
+I have Typescript 4.x running and functioning in the HMR, but Typescript itself seems to have an indntity crises between .0 and .1
 I've decided to separate out my 'source' from what is shipped to the browser.  So 'client/' is the thingy I edit
 I've transferred my style definitions to sass and style-loader.  So, I'm getting funky HMR when I change the .scss.   We're sucking diesel.
  
@@ -24,18 +24,18 @@ I need to get my head around Typescript. I'm not getting output where I wanted i
 
 get your head around the 'uglify' thingys in sample-25a3681a5fc2 and get a webpack production build implemented with minification and uglification
 	slowly , not very surely.  Struggling with the 'separate config files ' approach and have left it dead as webpack.<common,dev,prod>.js.  
+	So, basically i'm running with webpack.config.js
 	Have made a connection between the webPack env variable and the VS build using launchSettings.json with conditional targets in the .csproj file???
+
+Added a bit of Login as a prelude to Authorization.
+	Basically I'm running a Login thru UserController.Login . Happily, with Firefox , Edge and in Chrome....  
+
 
 
 Onward and Upward
 
-
-    "babel-loader": "^8.0.4",
-    "babel-preset-react": "^6.24.1",
-Added a bit of Login as a prelude to Authorization.
-	Basically I'm running a Login thru UserController.Login . Happily, with Firefox , Edge and in Chrome....  
-
 		And I'de like to move on to Core 3.1....
+		And from there to .Net 5
 Then I'de love to remember what I was trying to do.....
 
 

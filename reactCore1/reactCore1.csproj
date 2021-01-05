@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <TypeScriptToolsVersion>3.7</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>4.1</TypeScriptToolsVersion>
 	<TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <!-- this bit is doing nothing -->	
     <ZeRoot>Client\</ZeRoot>	
