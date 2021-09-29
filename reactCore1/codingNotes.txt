@@ -140,6 +140,24 @@ ____________________________________________________________________________
         }
         return Promise.all(activity);
     }
+
+some powershell guff intended to generate an SSl script in .pfx format.  Context was webpack-dev-server.
+Set up the first property ($webDir)
+$webDir = "-- enter the directory with your webpack.config.js file here";
+
+Write-Host "Creating cert directly into CurrentUser\My store (due to limitation that certs cannot be created directly in root store)"
+$cert = New-SelfSignedCertificate -CertStoreLocation Cert:\CurrentUser\My -DnsName localhost -NotAfter ([DateTime]::Now.AddYears(10))
+
+$certFile = Join-Path $webdir "localhost.pfx"
+Write-Host "Exporting certificate to $certFile -- this is used by the webpack-dev-server directly with a hardcoded password"
+$password = ConvertTo-SecureString -String "abc123" -Force -AsPlainText
+Export-PfxCertificate -Cert $cert -FilePath $certFile -Password $password
+
+Write-Host "Importing $certFile to CurrentUser\Root store for immediate system wide trust"
+Write-Host "---------- THERE MAY BE A WINDOWS PROMPT WHICH MUST BE ACCEPTED FOR THIS NOW ------------" -ForegroundColor Yellow
+Import-PfxCertificate -FilePath $certFile -CertStoreLocation Cert:\LocalMachine\Root -Password $password
+
+
 and I had in Login.ts
 __________________________________________________________
     public submitLogin2(evt): void {

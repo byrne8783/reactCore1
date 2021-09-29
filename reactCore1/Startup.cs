@@ -11,7 +11,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
+
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Serialization;
@@ -22,8 +24,8 @@ namespace ReactCore1
 {
     public class Startup
     {
-        private readonly IHostingEnvironment hostingEnvironment;
-        private readonly ILogger logger;
+        //private readonly IWebHostEnvironment hostingEnvironment;
+        //private readonly ILogger logger;
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
@@ -51,51 +53,57 @@ namespace ReactCore1
                 ;
             services.AddScoped<RevokeAuthenticationEvents>();
             services.AddTransient<ITicketStore, InMemoryTicketStore>();
-            services.AddMvc()  //options => options.Filters.Add(new AuthorizeFilter())
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
-                .AddJsonOptions(b =>
+            services.AddControllersWithViews()  //options => options.Filters.Add(new AuthorizeFilter())
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
+                .AddNewtonsoftJson(b =>
                 {
                     b.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
                     b.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                 });
+            services.AddSpaStaticFiles(configuration => {
+                configuration.RootPath = "wwwroot/dist";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
-                app.UseWebpackDevMiddleware(new Microsoft.AspNetCore.SpaServices.Webpack.WebpackDevMiddlewareOptions
-                {
-                    //ProjectPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot"),
-                    HotModuleReplacementClientOptions = new Dictionary<string, string>()
-                    {
-                        { "reload", "true" }
-                    },
-                    HotModuleReplacement = true
-                });
+                app.Map( "/dist",
+                        ctx => ctx.UseSpa(
+                            spa =>
+                            {
+                                spa.Options.SourcePath = "wwwroot";
+                                spa.UseProxyToSpaDevelopmentServer("http://localhost:8400/");
+                            }));
+
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseStaticFiles();
+                app.UseSpaStaticFiles();
+            }
 
-            app.UseStaticFiles();
 
             app.UseAuthentication();
 
             IHttpContextAccessor httpContextAccessor = app.ApplicationServices.GetRequiredService<IHttpContextAccessor>();
             HttpContextExtensions.Configure(httpContextAccessor);
 
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                          name: "default",
-                          template: "{controller=Home}/{action=Index}/{id?}");
+            app.UseRouting();
+            app.UseAuthorization();
+            app.UseEndpoints(endpoints => {
+                endpoints.MapDefaultControllerRoute();
+                endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });
         }
         #region _____________________________________________________________________constructors
-        public Startup(IHostingEnvironment env, ILogger<Startup> ler)
+        public Startup(IWebHostEnvironment env, ILogger<Startup> ler)
         {
-            hostingEnvironment = env;
-            logger = ler;
+            //hostingEnvironment = env;
+            //logger = ler;
         }
         #endregion
     }

@@ -35,6 +35,16 @@ Added a bit of Login as a prelude to Authorization.
 Onward and Upward
 
 		And I'de like to move on to Core 3.1....
+		so Im having a go at this https://dev.to/jayotterbein/how-to-get-hot-module-reload-with-custom-webpack-in-asp-net-core-3-1-5a7m
+		**********************************
+		got rid of this        "webpack-dev-middleware": "^3.7.3",  "webpack-hot-middleware": "^2.25.0",
+		I'm not getting the funky HMR - webpack-dev-server is being asked, but dos'nt know its his.  
+		And I'm not getting the timeout logout message - thats because I did'nt write any code for it. I just wrote the loading icon timer.
+		Have a look again at that web-socket line in webpack.config.js
+
+
+
+
 		And from there to .Net 5
 Then I'de love to remember what I was trying to do.....
 

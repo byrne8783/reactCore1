@@ -9,6 +9,15 @@ module.exports = (env = {}, argv = {}) => {
     const isDevBuild = !(env && env.prod);
     let config = {
         mode: isDevBuild ? 'development' : argv.mode || 'development',               // "production" | "development" | "whatever"
+        devServer: {
+            publicPath: '/',        // this is where the webpack-dev-server starts serving files from, so if the web client requests https://localhost:8400/vendor.js this will serve the built file vendor.js
+            // this is where static files are stored; in this example the physical path ./wwwroot/dist/some/image.jpg will be attainable via https://localhost:8400/dist/some/image.jpg
+            contentBase: path.resolve(__dirname, 'wwwroot/dist'), // was './wwwroot/dist'
+            hot: true,// this enabled hot module replacement of modules so when you make a change in a javascript or css file the change will reflect on the browser
+            port: 8400, // port that the webpack-dev-server runs on; must match the later configuration where ASP.NET Core knows where to execute
+            //transportMode: 'ws'            // this uses websockets for communication for hot module reload, and websockets are planned to be the default for the 5.x release
+
+        },
         resolve: { extensions: ['*', '.ts', '.js'] },     // supposed to mean 'look in .js and .ts for modules specified without an extension;  but a bit hairy!
         entry: {
             main: './client/js/app.ts'                // Here is where the application starts executing and webpack starts bundling  
